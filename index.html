@@ -104,10 +104,7 @@
 <script type="module">
   // ======= CONFIG =======
   const ADMIN_EMAILS = [
-    "pfeuferleon@gmail.com",
-    "Jakob.st74@gmail.com",
-    "Kbisselik@gmail.com",
-    "tehjooker@mail.com"
+    "pfeuferleon@gmail.com"
   ];
   const POINTS_PER_CORRECT = 1; // change if you want later
   document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
@@ -269,10 +266,6 @@
       return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`;
     }).join('')}</div>`;
   }
-      const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB;
-      return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`;
-    }).join('')}</div>`;
-  }
 
   function matchCard(match, picksForMatch, isPast, users){
     const container = document.createElement('div');
@@ -357,7 +350,6 @@
     if(!pastEl.hasChildNodes()){
       pastEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No past matches yet.</div>';
     }
-  });
   }
 
   // ======= Scoreboard =======
