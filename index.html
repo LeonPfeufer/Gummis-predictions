@@ -6,75 +6,88 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>LoL Worlds Predictor</title>
     <style>
-      :root { --bg:#0b0f14; --card:#121923; --card-upcoming:#142433; --card-past:#1c161a; --gold-bg:#f4d26c; --silver-bg:#d7dbe2; --bronze-bg:#d89252; --podium-text:#0b0b0b; --gold:#f2c14e; --silver:#c0c4cc; --bronze:#cd7f32; --border-upcoming: #2e9cca; --border-past: #b3475c;--muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
+      :root { 
+        --bg:#0b0f14; --card:#121923; 
+        --card-upcoming:#142433; --card-past:#1c161a; 
+        --gold-bg:#f4d26c; --silver-bg:#d7dbe2; --bronze-bg:#d89252; 
+        --podium-text:#0b0b0b; --gold:#f2c14e; --silver:#c0c4cc; --bronze:#cd7f32; 
+        --border-upcoming:#2e9cca; --border-past:#b3475c;
+        --muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; 
+      }
       * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
       body { margin:0; background:linear-gradient(180deg,#0b0f14,#0d121a); color:var(--text); }
       header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; position:sticky; top:0; background:rgba(11,15,20,0.85); backdrop-filter:saturate(180%) blur(8px); border-bottom:1px solid #1f2a37; }
       h1 { font-size:20px; margin:0; letter-spacing:0.4px; }
-      .container { max-width:980px; margin:24px auto; padding:0 16px; }
-      .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
-      .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
-      #upcoming .card {
-      background: var(--card-upcoming);
-      border: 1px solid var(--border-upcoming);
-      box-shadow: 0 0 10px var(--border-upcoming);}
-      #past .card {
-      background: var(--card-past);
-      border: 1px solid var(--border-past);
-      box-shadow: 0 0 10px var(--border-past);}
-      #upcoming .card:hover {
-      box-shadow: 0 0 18px var(--border-upcoming);
-      transform: translateY(-3px);
-      transition: all 0.2s ease-in-out;}
-      #past .card:hover {
-      box-shadow: 0 0 18px var(--border-past);
-      transform: translateY(-3px);
-      transition: all 0.2s ease-in-out;}
-      .card h3 { margin:0 0 10px; font-size:16px; }
-      .muted { color:var(--muted); font-size:13px; }
-      .row { display:flex; align-items:center; gap:8px; }
-      .spacer { flex:1; }
-      button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
-      button:hover { filter:brightness(1.1); }
-      .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
-      .good { color:#0f3; border-color:#174; }
-      .bad { color:#f66; border-color:#402; }
-      .accent { color:var(--accent); }
-      input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
-      form .row { margin:6px 0; }
-      .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
-      .scoreboard { width:100%; border-collapse:collapse; }
-      .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
-      .rank-badge{
-      display:inline-block; min-width:2ch; text-align:right; margin-right:10px;
-      font-weight:700; color:#a9b6c8;}
-/* Color the entire row for top 3 and switch text to dark for contrast */
-.tr-rank-1 td { background: var(--gold-bg); color: var(--podium-text); }
-.tr-rank-2 td { background: var(--silver-bg); color: var(--podium-text); }
-.tr-rank-3 td { background: var(--bronze-bg); color: var(--podium-text); }
+      .container { max-width:1100px; margin:24px auto; padding:0 16px; }
 
-/* Ensure the rank badge also looks right on podium rows */
-.tr-rank-1 .rank-badge,
-.tr-rank-2 .rank-badge,
-.tr-rank-3 .rank-badge { color: var(--podium-text); }
+```
+  /* Cards (full match cards) */
+  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+  .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
+  .card h3 { margin:0 0 10px; font-size:16px; }
+  .muted { color:var(--muted); font-size:13px; }
+  .row { display:flex; align-items:center; gap:8px; }
+  .spacer { flex:1; }
+  button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
+  button:hover { filter:brightness(1.1); }
+  .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
+  .good { color:#0f3; border-color:#174; }
+  .bad { color:#f66; border-color:#402; }
+  .accent { color:var(--accent); }
+  input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
+  form .row { margin:6px 0; }
+  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
 
-/* Keep non-podium rows as they are (white text on dark) */
-.scoreboard tbody tr:not(.tr-rank-1):not(.tr-rank-2):not(.tr-rank-3) td {
-  color: var(--text);}
-      .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
-      .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
-      .hidden { display:none; }
-      .team { font-weight:700; }
-      .pick { font-size:13px; color:#c7d7ea; }
-      .lock { color:#ffc861; }
-      .pickslist { margin-top:10px; border-top:1px solid #1f2a37; padding-top:8px; font-size:13px; }
-      .pickslist .entry { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed #1a2432; }
-      .pickslist .entry:last-child { border-bottom:none; }
-      .tag { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid #223045; }
-      .tag.good { color:#0f3; border-color:#174; }
-      .tag.bad { color:#f66; border-color:#402; }
-      .tag.pending { color:#9bb3ce; border-color:#223045; }
-    </style>
+  /* Scoreboard */
+  .scoreboard { width:100%; border-collapse:collapse; }
+  .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
+  .rank-badge{ display:inline-block; min-width:2ch; text-align:right; margin-right:10px; font-weight:700; color:#a9b6c8; }
+  .tr-rank-1 td { background: var(--gold-bg); color: var(--podium-text); }
+  .tr-rank-2 td { background: var(--silver-bg); color: var(--podium-text); }
+  .tr-rank-3 td { background: var(--bronze-bg); color: var(--podium-text); }
+  .tr-rank-1 .rank-badge, .tr-rank-2 .rank-badge, .tr-rank-3 .rank-badge { color: var(--podium-text); }
+  .scoreboard tbody tr:not(.tr-rank-1):not(.tr-rank-2):not(.tr-rank-3) td { color: var(--text); }
+
+  .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
+  .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
+  .hidden { display:none; }
+  .team { font-weight:700; }
+  .pick { font-size:13px; color:#c7d7ea; }
+  .lock { color:#ffc861; }
+  .pickslist { margin-top:10px; border-top:1px solid #1f2a37; padding-top:8px; font-size:13px; }
+  .pickslist .entry { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed #1a2432; }
+  .pickslist .entry:last-child { border-bottom:none; }
+  .tag { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid #223045; }
+  .tag.good { color:#0f3; border-color:#174; }
+  .tag.bad { color:#f66; border-color:#402; }
+  .tag.pending { color:#9bb3ce; border-color:#223045; }
+
+  /* Upcoming/Past visual style */
+  #upcoming .card { background: var(--card-upcoming); border: 1px solid var(--border-upcoming); box-shadow: 0 0 10px var(--border-upcoming);} 
+  #past .card { background: var(--card-past); border: 1px solid var(--border-past); box-shadow: 0 0 10px var(--border-past);} 
+  #upcoming .card:hover { box-shadow: 0 0 18px var(--border-upcoming); transform: translateY(-3px); transition: all 0.2s ease-in-out;} 
+  #past .card:hover { box-shadow: 0 0 18px var(--border-past); transform: translateY(-3px); transition: all 0.2s ease-in-out;}
+
+  /* PANELS (big rounded squares with previews) */
+  .panels { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+  @media (max-width: 860px){ .panels { grid-template-columns:1fr; } }
+  .panel { background:#0f1a28; border:1px solid #27415f; border-radius:24px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); cursor:pointer; }
+  .panel:hover { border-color:#3a5a80; }
+  .panel-title { font-size:20px; font-weight:800; margin:0 0 8px; }
+  .preview-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+  .preview-tile { background:#0f1622; border:1px solid #223045; border-radius:12px; padding:10px; min-height:64px; display:flex; flex-direction:column; justify-content:center; }
+  .preview-tile .teams { font-size:12px; line-height:1.2; color:#cdd9ea; }
+  .preview-tile .winA, .preview-tile .winB { font-weight:800; }
+  .preview-tile .winA { color:#69e08a; }
+  .preview-tile .winB { color:#e57474; }
+  .preview-empty { color:var(--muted); font-size:13px; grid-column:1/-1; }
+
+  /* Details (expandable areas) */
+  .panel-details { margin-top:12px; }
+  .panel-details.hidden { display:none; }
+</style>
+```
+
   </head>
   <body>
     <header>
@@ -110,14 +123,24 @@
     </form>
   </div>
 
-  <div class="card">
-    <h3>Upcoming Matches</h3>
-    <div id="upcoming" class="cards"></div>
+  <!-- PANELS row -->
+  <div class="panels">
+    <div id="panel-upcoming" class="panel" role="button" aria-expanded="false">
+      <div class="panel-title">Upcoming matches</div>
+      <div class="preview-grid" id="preview-upcoming"></div>
+    </div>
+    <div id="panel-past" class="panel" role="button" aria-expanded="false">
+      <div class="panel-title">Previous matches</div>
+      <div class="preview-grid" id="preview-past"></div>
+    </div>
   </div>
 
-  <div class="card">
-    <h3>Past Matches</h3>
-    <div id="past" class="cards"></div>
+  <!-- Details (expand/collapse) -->
+  <div id="details-upcoming" class="panel-details hidden">
+    <div class="card"><h3>Upcoming Matches</h3><div id="upcoming" class="cards"></div></div>
+  </div>
+  <div id="details-past" class="panel-details hidden">
+    <div class="card"><h3>Past Matches</h3><div id="past" class="cards"></div></div>
   </div>
 
   <div class="card">
@@ -149,7 +172,6 @@
   import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
   import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  // *** YOUR FIREBASE CONFIG ***
   const firebaseConfig = {
     apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
     authDomain: "lol-gummis.firebaseapp.com",
@@ -170,9 +192,7 @@
   const elUser = document.getElementById('user-info');
   const adminPanel = document.getElementById('admin-panel');
 
-  elSignin.onclick = async () => {
-    try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); }
-  };
+  elSignin.onclick = async () => { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); } };
   elSignout.onclick = async () => { await signOut(auth); };
 
   let currentUser = null;
@@ -189,11 +209,7 @@
   const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
   function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
   function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
-  function updateAdminDebug(){
-    const el = document.getElementById('admin-debug');
-    if(!el) return;
-    el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode';
-  }
+  function updateAdminDebug(){ const el = document.getElementById('admin-debug'); if(!el) return; el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode'; }
 
   onAuthStateChanged(auth, async (user) => {
     currentUser = user;
@@ -201,13 +217,7 @@
       elSignin.classList.add('hidden');
       elSignout.classList.remove('hidden');
       elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
-      await setDoc(doc(db, 'users', user.uid), {
-        uid: user.uid,
-        displayName: user.displayName ?? 'Anonymous',
-        email: user.email ?? '',
-        photoURL: user.photoURL ?? '',
-        updatedAt: serverTimestamp()
-      }, { merge: true });
+      await setDoc(doc(db, 'users', user.uid), { uid: user.uid, displayName: user.displayName ?? 'Anonymous', email: user.email ?? '', photoURL: user.photoURL ?? '', updatedAt: serverTimestamp() }, { merge: true });
     } else {
       elSignin.classList.remove('hidden');
       elSignout.classList.add('hidden');
@@ -222,6 +232,30 @@
   const pastEl = document.getElementById('past');
   const addForm = document.getElementById('add-match');
 
+  const panelUpcoming = document.getElementById('panel-upcoming');
+  const panelPast = document.getElementById('panel-past');
+  const previewUpcomingEl = document.getElementById('preview-upcoming');
+  const previewPastEl = document.getElementById('preview-past');
+  const detailsUpcoming = document.getElementById('details-upcoming');
+  const detailsPast = document.getElementById('details-past');
+
+  let expanded = null; // 'upcoming' | 'past' | null
+  function expand(which){
+    expanded = which;
+    const isUp = which === 'upcoming';
+    detailsUpcoming.classList.toggle('hidden', !isUp);
+    detailsPast.classList.toggle('hidden', isUp);
+    panelUpcoming.setAttribute('aria-expanded', isUp);
+    panelPast.setAttribute('aria-expanded', !isUp);
+    // scroll into view when opening
+    if(which){
+      const target = isUp ? detailsUpcoming : detailsPast;
+      target.scrollIntoView({ behavior:'smooth', block:'start' });
+    }
+  }
+  panelUpcoming.addEventListener('click', ()=> expand('upcoming'));
+  panelPast.addEventListener('click', ()=> expand('past'));
+
   addForm?.addEventListener('submit', async (e)=>{
     e.preventDefault();
     const teamA = document.getElementById('teamA').value.trim();
@@ -229,84 +263,52 @@
     const startLocal = document.getElementById('startTime').value; // yyyy-MM-ddTHH:mm
     if(!teamA || !teamB || !startLocal) return;
     const startTime = new Date(startLocal);
-    await addDoc(collection(db,'matches'), {
-      teamA, teamB,
-      startTime: startTime,
-      result: null,
-      createdAt: serverTimestamp()
-    });
+    await addDoc(collection(db,'matches'), { teamA, teamB, startTime, result: null, createdAt: serverTimestamp() });
     e.target.reset();
   });
 
   function fmtDate(d){ return new Date(d).toLocaleString(); }
   function now(){ return new Date(); }
-  function locked(m){
-    if(!m.startTime) return false;
-    const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime);
-    return now() >= start;
-  }
+  function locked(m){ if(!m.startTime) return false; const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime); return now() >= start; }
 
   const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
   onSnapshot(matchesQ, async (snap)=>{
     const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-    // Fetch picks and users once per refresh
-    const [picksSnap, usersSnap] = await Promise.all([
-      getDocs(collection(db,'picks')),
-      getDocs(collection(db,'users'))
-    ]);
+    const [picksSnap, usersSnap] = await Promise.all([ getDocs(collection(db,'picks')), getDocs(collection(db,'users')) ]);
     const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
-    const picksByMatch = new Map(); // matchId -> [{userId, pick}]
-    picksSnap.forEach(p=>{
-      const data = p.data();
-      const list = picksByMatch.get(data.matchId) || [];
-      list.push({ userId: data.userId, pick: data.pick });
-      picksByMatch.set(data.matchId, list);
-    });
+    const picksByMatch = new Map();
+    picksSnap.forEach(p=>{ const data = p.data(); const list = picksByMatch.get(data.matchId) || []; list.push({ userId: data.userId, pick: data.pick }); picksByMatch.set(data.matchId, list); });
 
-    renderMatches(matches, picksByMatch, users);
+    // Split upcoming and past
+    const future = matches.filter(m=>!locked(m));
+    const past = matches.filter(m=>locked(m)).reverse(); // most recent first
+
+    renderPreviews(future, past, picksByMatch);
+    renderMatches(future, past, picksByMatch, users);
     updateScoreboard(matches, picksByMatch, users);
   });
 
-  async function getUserPick(matchId, uid){
-    if(!uid) return null;
-    const ref = doc(db, 'picks', `${uid}_${matchId}`);
-    const d = await getDoc(ref);
-    return d.exists() ? d.data() : null;
-  }
+  async function getUserPick(matchId, uid){ if(!uid) return null; const ref = doc(db, 'picks', `${uid}_${matchId}`); const d = await getDoc(ref); return d.exists() ? d.data() : null; }
+  async function savePick(match, pick){ if(!currentUser){ alert('Sign in to submit picks.'); return; } if(locked(match)) { alert('Match is locked.'); return; } const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`); await setDoc(ref, { userId: currentUser.uid, userName: currentUser.displayName ?? currentUser.email, matchId: match.id, pick, updatedAt: serverTimestamp() }, { merge:true }); }
 
-  async function savePick(match, pick){
-    if(!currentUser){ alert('Sign in to submit picks.'); return; }
-    if(locked(match)) { alert('Match is locked.'); return; }
-    const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
-    await setDoc(ref, {
-      userId: currentUser.uid,
-      userName: currentUser.displayName ?? currentUser.email,
-      matchId: match.id,
-      pick,
-      updatedAt: serverTimestamp()
-    }, { merge:true });
-  }
+  function picksListHTML(match, picks, users){ if(!picks || picks.length === 0) return '<div class="muted">No picks yet.</div>'; const res = match.result; return `<div class="pickslist">${picks.map(p=>{ const u = users.get(p.userId); const name = u?.displayName || 'Unknown'; let tag = '<span class="tag pending">pending</span>'; if(res){ tag = p.pick === res ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>'; } const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB; return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`; }).join('')}</div>`; }
 
-  function picksListHTML(match, picks, users){
-    if(!picks || picks.length === 0) return '<div class="muted">No picks yet.</div>';
-    const res = match.result; // 'A'|'B'|null
-    return `<div class="pickslist">${picks.map(p=>{
-      const u = users.get(p.userId);
-      const name = u?.displayName || 'Unknown';
-      let tag = '<span class="tag pending">pending</span>';
-      if(res){
-        tag = p.pick === res ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>';
-      }
-      const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB;
-      return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`;
-    }).join('')}</div>`;
+  function previewTile(match){
+    const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
+    const el = document.createElement('div');
+    el.className = 'preview-tile';
+    const winMarkA = match.result === 'A' ? ' winA' : '';
+    const winMarkB = match.result === 'B' ? ' winB' : '';
+    el.innerHTML = `<div class="teams"><span class="${winMarkA}">${match.teamA}</span><br/><span class="${winMarkB}">${match.teamB}</span></div>`;
+    el.title = `${match.teamA} vs ${match.teamB} • ${fmtDate(startTime)}`;
+    return el;
   }
 
   function matchCard(match, picksForMatch, isPast, users){
     const container = document.createElement('div');
     container.className = 'card';
     const isLocked = locked(match);
-    const result = match.result; // 'A' | 'B' | null
+    const result = match.result;
     const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
     container.innerHTML = `
       <div class="row">
@@ -337,88 +339,47 @@
       ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
     `;
 
-    // hook up inputs
     const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
     radios.forEach(r=>{ r.addEventListener('change', ()=> savePick(match, r.value)); });
 
     if(isAdmin()){
       const sel = container.querySelector(`#set-${match.id}`);
       const btn = container.querySelector(`#apply-${match.id}`);
-      btn?.addEventListener('click', async ()=>{
-        const v = sel.value;
-        if(v === 'clear') {
-          await updateDoc(doc(db,'matches',match.id), { result: null });
-        } else if(v === 'A' || v === 'B') {
-          await updateDoc(doc(db,'matches',match.id), { result: v });
-        }
-      });
+      btn?.addEventListener('click', async ()=>{ const v = sel.value; if(v === 'clear') { await updateDoc(doc(db,'matches',match.id), { result: null }); } else if(v === 'A' || v === 'B') { await updateDoc(doc(db,'matches',match.id), { result: v }); } });
     }
 
-    // preselect existing pick for current user
-    if(currentUser){
-      getUserPick(match.id, currentUser.uid).then(p=>{
-        if(p?.pick){
-          const r = container.querySelector(`input[value="${p.pick}"]`);
-          if(r) r.checked = true;
-        }
-      });
-    }
+    if(currentUser){ getUserPick(match.id, currentUser.uid).then(p=>{ if(p?.pick){ const r = container.querySelector(`input[value="${p.pick}"]`); if(r) r.checked = true; } }); }
     return container;
   }
 
-  function renderMatches(matches, picksByMatch, users){
+  function renderPreviews(future, past, picksByMatch){
+    previewUpcomingEl.innerHTML = '';
+    previewPastEl.innerHTML = '';
+    const up6 = future.slice(0,6);
+    const past6 = past.slice(0,6);
+    if(up6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No upcoming yet'; previewUpcomingEl.appendChild(d); }
+    else up6.forEach(m=> previewUpcomingEl.appendChild(previewTile(m)) );
+    if(past6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No previous yet'; previewPastEl.appendChild(d); }
+    else past6.forEach(m=> previewPastEl.appendChild(previewTile(m)) );
+  }
+
+  function renderMatches(future, past, picksByMatch, users){
     upcomingEl.innerHTML = '';
     pastEl.innerHTML = '';
-    try{
-      matches.forEach(m=>{
-        const isPast = locked(m);
-        const picks = picksByMatch.get(m.id) || [];
-        const card = matchCard(m, picks, isPast, users);
-        (isPast ? pastEl : upcomingEl).appendChild(card);
-      });
-    } catch(err){
-      console.error('Render error', err);
-    }
-    if(!upcomingEl.hasChildNodes()){
-      upcomingEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No upcoming matches yet.</div>';
-    }
-    if(!pastEl.hasChildNodes()){
-      pastEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No past matches yet.</div>';
-    }
+    future.forEach(m=>{ const card = matchCard(m, picksByMatch.get(m.id)||[], false, users); upcomingEl.appendChild(card); });
+    past.forEach(m=>{ const card = matchCard(m, picksByMatch.get(m.id)||[], true, users); pastEl.appendChild(card); });
+    if(!upcomingEl.hasChildNodes()) upcomingEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No upcoming matches yet.</div>';
+    if(!pastEl.hasChildNodes()) pastEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No past matches yet.</div>';
   }
 
   // ======= Scoreboard =======
   const scoreboardBody = document.querySelector('#scoreboard tbody');
   function updateScoreboard(matches, picksByMatch, users){
     const resultsByMatch = new Map(matches.filter(m=>m.result).map(m=>[m.id,m.result]));
-    const totals = new Map(); // uid -> {points}
-
-    // Calculate points
-    picksByMatch.forEach((picks, matchId)=>{
-      const res = resultsByMatch.get(matchId);
-      if(!res) return; // only count matches with results
-      picks.forEach(p=>{
-        const cur = totals.get(p.userId) || { points:0 };
-        if(p.pick === res) cur.points += POINTS_PER_CORRECT;
-        totals.set(p.userId, cur);
-      });
-    });
-
-    const rows = Array.from(users.keys()).map(uid=>{
-      const name = users.get(uid)?.displayName || 'Unknown';
-      const points = totals.get(uid)?.points ?? 0;
-      return { name, points };
-    }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
-
-    scoreboardBody.innerHTML = rows.map((r, i) => {
-  const rank = i + 1;
-  const trClass = rank <= 3 ? `tr-rank-${rank}` : '';
-  return `<tr class="${trClass}">
-    <td><span class="rank-badge">${rank}.</span></td>
-    <td>${r.name}</td>
-    <td>${r.points}</td>
-  </tr>`;
-}).join('');
+    const totals = new Map();
+    picksByMatch.forEach((picks, matchId)=>{ const res = resultsByMatch.get(matchId); if(!res) return; picks.forEach(p=>{ const cur = totals.get(p.userId) || { points:0 }; if(p.pick === res) cur.points += POINTS_PER_CORRECT; totals.set(p.userId, cur); }); });
+    const rows = Array.from(users.keys()).map(uid=>{ const name = users.get(uid)?.displayName || 'Unknown'; const points = totals.get(uid)?.points ?? 0; return { name, points }; }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
+    scoreboardBody.innerHTML = rows.map((r,i)=>{ const rank=i+1; const trClass = rank<=3?`tr-rank-${rank}`:''; return `<tr class="${trClass}"><td><span class="rank-badge">${rank}.</span></td><td>${r.name}</td><td>${r.points}</td></tr>`; }).join('');
   }
 </script>
 ```
