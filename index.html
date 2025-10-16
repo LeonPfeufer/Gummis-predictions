@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>LoL Worlds Predictor</title>
     <style>
-      :root { --bg:#0b0f14; --card:#121923; --card-upcoming:#142433; --card-past:#1c161a; --muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
+      :root { --bg:#0b0f14; --card:#121923; --card-upcoming:#142433; --card-past:#1c161a; --border-upcoming: #2e9cca; --border-past: #b3475c;--muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
       * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
       body { margin:0; background:linear-gradient(180deg,#0b0f14,#0d121a); color:var(--text); }
       header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; position:sticky; top:0; background:rgba(11,15,20,0.85); backdrop-filter:saturate(180%) blur(8px); border-bottom:1px solid #1f2a37; }
@@ -14,8 +14,14 @@
       .container { max-width:980px; margin:24px auto; padding:0 16px; }
       .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
       .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
-      #upcoming .card {background: var(--card-upcoming);}
-      #past .card {background: var(--card-past);}
+      #upcoming .card {
+      background: var(--card-upcoming);
+      border: 1px solid var(--border-upcoming);
+      box-shadow: 0 0 10px var(--border-upcoming);}
+      #past .card {
+      background: var(--card-past);
+      border: 1px solid var(--border-past);
+      box-shadow: 0 0 10px var(--border-past);}
       .card h3 { margin:0 0 10px; font-size:16px; }
       .muted { color:var(--muted); font-size:13px; }
       .row { display:flex; align-items:center; gap:8px; }
