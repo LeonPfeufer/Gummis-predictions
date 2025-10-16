@@ -13,56 +13,6 @@
       .container { max-width:980px; margin:24px auto; padding:0 16px; }
       .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
       .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
-      .card h3 { margin:0 0 6px; font-size:16px; }
-      .muted { color:var(--muted); font-size:13px; }
-      .row { display:flex; align-items:center; gap:8px; }
-      .spacer { flex:1; }
-      button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
-      button:hover { filter:brightness(1.1); }
-      .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
-      .good { color:#0f3; border-color:#174; }
-      .bad { color:#f66; border-color:#402; }
-      .accent { color:var(--accent); }
-      input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
-      form .row { margin:6px 0; }
-      .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
-      .scoreboard { width:100%; border-collapse:collapse; }
-      .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
-      .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
-      .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
-      .hidden { display:none; }
-      .team { font-weight:700; }
-      .pick { font-size:13px; color:#c7d7ea; }
-      .lock { color:#ffc861; }
-    </style>
-  </head>
-  <body>
-    <header>
-      <h1>LoL Worlds Predictor</h1>
-      <div class="row">
-        <span id="user-info" class="muted"></span>
-        <span id="admin-debug" class="muted" style="margin-left:10px;"></span>
-        <button id="signin">Sign in</button>
-        <button id="signout" class="hidden">Sign out</button>
-      </div>
-    </header>
-
-  <!doctype html>
-
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LoL Worlds Predictor</title>
-    <style>
-      :root { --bg:#0b0f14; --card:#121923; --muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
-      * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
-      body { margin:0; background:linear-gradient(180deg,#0b0f14,#0d121a); color:var(--text); }
-      header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; position:sticky; top:0; background:rgba(11,15,20,0.85); backdrop-filter:saturate(180%) blur(8px); border-bottom:1px solid #1f2a37; }
-      h1 { font-size:20px; margin:0; letter-spacing:0.4px; }
-      .container { max-width:980px; margin:24px auto; padding:0 16px; }
-      .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
-      .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
       .card h3 { margin:0 0 10px; font-size:16px; }
       .muted { color:var(--muted); font-size:13px; }
       .row { display:flex; align-items:center; gap:8px; }
