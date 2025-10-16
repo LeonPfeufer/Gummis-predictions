@@ -62,6 +62,20 @@
   .tag.bad { color:#f66; border-color:#402; }
   .tag.pending { color:#9bb3ce; border-color:#223045; }
 
+  /* --- Team logos --- */
+  .logo-sm { width:24px; height:24px; object-fit:contain; vertical-align:middle; }
+  .logo-lg { width:32px; height:32px; object-fit:contain; vertical-align:middle; margin-right:6px; }
+
+  /* Fallback badge when a logo is missing */
+  .logo-badge {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:24px; height:24px; border-radius:6px;
+  background:#0f1622; border:1px solid #223045; color:#cdd9ea;
+  font-size:11px; font-weight:800; letter-spacing:.5px;
+  }
+  .logo-badge.lg { width:32px; height:32px; font-size:12px; margin-right:6px; }
+
+      
   /* Upcoming/Past visual style */
   #upcoming .card { background: var(--card-upcoming); border: 1px solid var(--border-upcoming); box-shadow: 0 0 10px var(--border-upcoming);} 
   #past .card { background: var(--card-past); border: 1px solid var(--border-past); box-shadow: 0 0 10px var(--border-past);} 
@@ -166,6 +180,45 @@
   ];
   const POINTS_PER_CORRECT = 1; // change if you want later
   document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
+
+  // === Team logos (add your uploaded files here) ===
+  // Key format: all-caps, no spaces/punctuation (e.g., "G2", "CFO", "KT", "SKT1","AL","FNC","MKOI","TES")
+  const TEAM_LOGOS = {
+  G2:  "logos/G2.png",
+  CFO:"logos/CFO.png",
+  KT:  "logos/KT.png",
+  SKT1:  "logos/SKT1.png",
+  AL:  "logos/AL.png",
+  FNC:"logos/FNC.png",
+  MKOI:  "logos/MKOI.png",
+  TES:  "logos/TES.png",
+  // add your other 4 here...
+  // SKT1 example: SKT1: "logos/skt1.png",
+  };
+
+  // Normalize a team name like "Gen.G" -> "GENG"
+  function teamKey(name){
+  return (name || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
+  }
+
+  // Make short initials for fallback badge, e.g., "G2", "GEN"
+  function teamInitials(name){
+  const key = teamKey(name);
+  // take first 3 letters/numbers (looks good in a tiny badge)
+  return key.slice(0, 3);
+  }
+
+  // Return <img> or a fallback badge for the team
+  function logoHTML(teamName, size /* 'sm' | 'lg' */){
+  const key = teamKey(teamName);
+  const url = TEAM_LOGOS[key];
+  if (url) {
+    return `<img class="logo-${size}" src="${url}" alt="${teamName} logo" loading="lazy">`;
+  }
+  // fallback badge with initials
+  const cls = size === 'lg' ? 'logo-badge lg' : 'logo-badge';
+  return `<span class="${cls}">${teamInitials(teamName)}</span>`;
+  }
 
   // ======= Firebase SDK (modular) =======
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
@@ -294,15 +347,27 @@
   function picksListHTML(match, picks, users){ if(!picks || picks.length === 0) return '<div class="muted">No picks yet.</div>'; const res = match.result; return `<div class="pickslist">${picks.map(p=>{ const u = users.get(p.userId); const name = u?.displayName || 'Unknown'; let tag = '<span class="tag pending">pending</span>'; if(res){ tag = p.pick === res ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>'; } const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB; return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`; }).join('')}</div>`; }
 
   function previewTile(match){
-    const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
-    const el = document.createElement('div');
-    el.className = 'preview-tile';
-    const winMarkA = match.result === 'A' ? ' winA' : '';
-    const winMarkB = match.result === 'B' ? ' winB' : '';
-    el.innerHTML = `<div class="teams"><span class="${winMarkA}">${match.teamA}</span><br/><span class="${winMarkB}">${match.teamB}</span></div>`;
-    el.title = `${match.teamA} vs ${match.teamB} • ${fmtDate(startTime)}`;
-    return el;
-  }
+  const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
+  const el = document.createElement('div');
+  el.className = 'preview-tile';
+
+  const left = logoHTML(match.teamA, 'sm');
+  const right = logoHTML(match.teamB, 'sm');
+
+  // Mark winner on past tiles by bolding the winner (kept minimal)
+  const winA = match.result === 'A' ? ' style="font-weight:800;"' : '';
+  const winB = match.result === 'B' ? ' style="font-weight:800;"' : '';
+
+  el.innerHTML = `
+    <div class="teams" title="${match.teamA} vs ${match.teamB} • ${fmtDate(startTime)}">
+      <span${winA}>${left}</span>
+      <span style="margin:0 6px;">:</span>
+      <span${winB}>${right}</span>
+    </div>
+  `;
+  return el;
+}
+
 
   function matchCard(match, picksForMatch, isPast, users){
     const container = document.createElement('div');
@@ -313,7 +378,12 @@
     container.innerHTML = `
       <div class="row">
         <div>
-          <div><span class="team">${match.teamA}</span> vs <span class="team">${match.teamB}</span></div>
+          <div>
+          <span>${logoHTML(match.teamA,'lg')}</span><span class="team">${match.teamA}</span>
+          <span style="margin:0 6px;">vs</span>
+          <span>${logoHTML(match.teamB,'lg')}</span><span class="team">${match.teamB}</span>
+          </div>
+
           <div class="muted">Starts: ${fmtDate(startTime)}</div>
           <div class="muted">Open until: ${fmtDate(startTime)}</div>
         </div>
