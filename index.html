@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>LoL Worlds Predictor</title>
     <style>
-      :root { --bg:#0b0f14; --card:#121923; --card-upcoming:#142433; --card-past:#1c161a; --gold:#f2c14e; --silver:#c0c4cc; --bronze:#cd7f32; --border-upcoming: #2e9cca; --border-past: #b3475c;--muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
+      :root { --bg:#0b0f14; --card:#121923; --card-upcoming:#142433; --card-past:#1c161a; --gold-bg:#f4d26c; --silver-bg:#d7dbe2; --bronze-bg:#d89252; --podium-text:#0b0b0b; --gold:#f2c14e; --silver:#c0c4cc; --bronze:#cd7f32; --border-upcoming: #2e9cca; --border-past: #b3475c;--muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
       * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
       body { margin:0; background:linear-gradient(180deg,#0b0f14,#0d121a); color:var(--text); }
       header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; position:sticky; top:0; background:rgba(11,15,20,0.85); backdrop-filter:saturate(180%) blur(8px); border-bottom:1px solid #1f2a37; }
@@ -48,13 +48,19 @@
       .rank-badge{
       display:inline-block; min-width:2ch; text-align:right; margin-right:10px;
       font-weight:700; color:#a9b6c8;}
-      .tr-rank-1 .rank-badge{ color:var(--gold); }
-      .tr-rank-2 .rank-badge{ color:var(--silver); }
-      .tr-rank-3 .rank-badge{ color:var(--bronze); }
+/* Color the entire row for top 3 and switch text to dark for contrast */
+.tr-rank-1 td { background: var(--gold-bg); color: var(--podium-text); }
+.tr-rank-2 td { background: var(--silver-bg); color: var(--podium-text); }
+.tr-rank-3 td { background: var(--bronze-bg); color: var(--podium-text); }
 
-      .tr-rank-1 td:nth-child(2){ color:var(--gold); font-weight:700; }   /* Player column */
-      .tr-rank-2 td:nth-child(2){ color:var(--silver); font-weight:700; }
-      .tr-rank-3 td:nth-child(2){ color:var(--bronze); font-weight:700; }
+/* Ensure the rank badge also looks right on podium rows */
+.tr-rank-1 .rank-badge,
+.tr-rank-2 .rank-badge,
+.tr-rank-3 .rank-badge { color: var(--podium-text); }
+
+/* Keep non-podium rows as they are (white text on dark) */
+.scoreboard tbody tr:not(.tr-rank-1):not(.tr-rank-2):not(.tr-rank-3) td {
+  color: var(--text);}
       .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
       .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
       .hidden { display:none; }
