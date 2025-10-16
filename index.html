@@ -41,6 +41,7 @@
       <h1>LoL Worlds Predictor</h1>
       <div class="row">
         <span id="user-info" class="muted"></span>
+        <span id="admin-debug" class="muted" style="margin-left:10px;"></span>
         <button id="signin">Sign in</button>
         <button id="signout" class="hidden">Sign out</button>
       </div>
@@ -86,38 +87,31 @@
       <div class="footer">Made for friends. Not affiliated with Riot Games.</div>
     </div>
 
-    <!-- Replace the firebaseConfig object below with your own config from Firebase Console -->
     <script type="module">
-      // ======= CONFIG =======
       const ADMIN_EMAILS = [
         "pfeuferleon@gmail.com"
       ];
-      const POINTS_PER_CORRECT = 1; // change if you want
+      const POINTS_PER_CORRECT = 1;
       document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
 
-      // ======= Firebase SDK (modular) =======
       import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
       import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-      import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, where, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+      import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-      // *** PASTE YOUR FIREBASE CONFIG HERE ***
-const firebaseConfig = {
-
-  apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
-  authDomain: "lol-gummis.firebaseapp.com",
-  projectId: "lol-gummis",
-  storageBucket: "lol-gummis.firebasestorage.app",
-  messagingSenderId: "254929720511",
-  appId: "1:254929720511:web:ad684ca51476b0d870620a",
-  measurementId: "G-SME88855KH"
-};
-
+      const firebaseConfig = {
+        apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
+        authDomain: "lol-gummis.firebaseapp.com",
+        projectId: "lol-gummis",
+        storageBucket: "lol-gummis.firebasestorage.app",
+        messagingSenderId: "254929720511",
+        appId: "1:254929720511:web:ad684ca51476b0d870620a",
+        measurementId: "G-SME88855KH"
+      };
 
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);
       const db = getFirestore(app);
 
-      // ======= Auth UI =======
       const elSignin = document.getElementById('signin');
       const elSignout = document.getElementById('signout');
       const elUser = document.getElementById('user-info');
@@ -129,13 +123,31 @@ const firebaseConfig = {
       elSignout.onclick = async () => { await signOut(auth); };
 
       let currentUser = null;
+      function normalizeEmail(e){
+        e = (e||'').trim().toLowerCase();
+        const [local, domain] = e.split('@');
+        if(!local || !domain) return e;
+        if(domain === 'gmail.com' || domain === 'googlemail.com'){
+          const cleanLocal = local.split('+')[0].replace(/\./g,'');
+          return `${cleanLocal}@gmail.com`;
+        }
+        return `${local}@${domain}`;
+      }
+      const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
+      function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
+      function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
+      function updateAdminDebug(){
+        const el = document.getElementById('admin-debug');
+        if(!el) return;
+        el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode';
+      }
+
       onAuthStateChanged(auth, async (user) => {
         currentUser = user;
         if (user) {
           elSignin.classList.add('hidden');
           elSignout.classList.remove('hidden');
           elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
-          // ensure user doc exists
           await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             displayName: user.displayName ?? 'Anonymous',
@@ -149,12 +161,9 @@ const firebaseConfig = {
           elUser.textContent = '';
         }
         renderAdmin();
+        updateAdminDebug();
       });
 
-      function isAdmin(){ return currentUser && ADMIN_EMAILS.includes(currentUser.email); }
-      function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
-
-      // ======= Matches =======
       const matchesEl = document.getElementById('matches');
       const addForm = document.getElementById('add-match');
 
@@ -162,7 +171,7 @@ const firebaseConfig = {
         e.preventDefault();
         const teamA = document.getElementById('teamA').value.trim();
         const teamB = document.getElementById('teamB').value.trim();
-        const startLocal = document.getElementById('startTime').value; // yyyy-MM-ddTHH:mm
+        const startLocal = document.getElementById('startTime').value;
         if(!teamA || !teamB || !startLocal) return;
         const startTime = new Date(startLocal);
         await addDoc(collection(db,'matches'), {
@@ -177,7 +186,12 @@ const firebaseConfig = {
       function fmtDate(d){ return new Date(d).toLocaleString(); }
       function now(){ return new Date(); }
 
-      // Live subscribe to matches
+      function locked(m){
+        if(!m.startTime) return false;
+        const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime);
+        return now() >= start;
+      }
+
       const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
       onSnapshot(matchesQ, async (snap)=>{
         const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
@@ -205,18 +219,18 @@ const firebaseConfig = {
         }, { merge:true });
       }
 
-      function locked(m){ return m.startTime && now() >= new Date(m.startTime); }
-
       function matchCard(match){
         const container = document.createElement('div');
         container.className = 'card';
         const isLocked = locked(match);
-        const result = match.result; // 'A' | 'B' | null
+        const result = match.result;
+        const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
         container.innerHTML = `
           <div class="row">
             <div>
               <div><span class="team">${match.teamA}</span> vs <span class="team">${match.teamB}</span></div>
-              <div class="muted">Starts: ${fmtDate(match.startTime?.toDate ? match.startTime.toDate() : match.startTime)}</div>
+              <div class="muted">Starts: ${fmtDate(startTime)}</div>
+              <div class="muted">Open until: ${fmtDate(startTime)}</div>
             </div>
             <div class="spacer"></div>
             ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
@@ -239,7 +253,6 @@ const firebaseConfig = {
           </div>`:''}
         `;
 
-        // hook up inputs
         const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
         radios.forEach(r=>{
           r.addEventListener('change', ()=> savePick(match, r.value));
@@ -258,7 +271,6 @@ const firebaseConfig = {
           });
         }
 
-        // preselect existing pick
         if(currentUser){
           getUserPick(match.id, currentUser.uid).then(p=>{
             if(p?.pick){
@@ -275,7 +287,6 @@ const firebaseConfig = {
         matches.forEach(m=> matchesEl.appendChild(matchCard(m)) );
       }
 
-      // ======= Scoreboard =======
       const scoreboardBody = document.querySelector('#scoreboard tbody');
       async function updateScoreboard(matches){
         const picksSnap = await getDocs(collection(db,'picks'));
@@ -283,7 +294,7 @@ const firebaseConfig = {
         const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
 
         const resultsByMatch = new Map(matches.filter(m=>m.result).map(m=>[m.id,m.result]));
-        const totals = new Map(); // uid -> {correct, total}
+        const totals = new Map();
 
         picksSnap.forEach(p=>{
           const { userId, matchId, pick } = p.data();
@@ -300,6 +311,7 @@ const firebaseConfig = {
           const name = users.get(uid)?.displayName || 'Unknown';
           return { name, correct: stat.correct, total: stat.total };
         }).sort((a,b)=> b.correct - a.correct || a.name.localeCompare(b.name));
+
 
         scoreboardBody.innerHTML = rows.map(r=>`<tr><td>${r.name}</td><td>${r.correct}</td><td>${r.total}</td></tr>`).join('');
       }
