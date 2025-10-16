@@ -47,274 +47,376 @@
       </div>
     </header>
 
-    <div class="container">
-      <div class="card notice">
-        <div><strong>How it works:</strong> Pick the winner for each match before it locks (match start time). You get <span id="points-per-correct">1</span> point per correct pick. Admins can add matches and set results.</div>
+  <!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LoL Worlds Predictor</title>
+    <style>
+      :root { --bg:#0b0f14; --card:#121923; --muted:#8192a6; --text:#eaf2ff; --accent:#7cc5ff; --good:#37d67a; --bad:#ff6b6b; }
+      * { box-sizing: border-box; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      body { margin:0; background:linear-gradient(180deg,#0b0f14,#0d121a); color:var(--text); }
+      header { display:flex; justify-content:space-between; align-items:center; padding:16px 20px; position:sticky; top:0; background:rgba(11,15,20,0.85); backdrop-filter:saturate(180%) blur(8px); border-bottom:1px solid #1f2a37; }
+      h1 { font-size:20px; margin:0; letter-spacing:0.4px; }
+      .container { max-width:980px; margin:24px auto; padding:0 16px; }
+      .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+      .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
+      .card h3 { margin:0 0 10px; font-size:16px; }
+      .muted { color:var(--muted); font-size:13px; }
+      .row { display:flex; align-items:center; gap:8px; }
+      .spacer { flex:1; }
+      button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
+      button:hover { filter:brightness(1.1); }
+      .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
+      .good { color:#0f3; border-color:#174; }
+      .bad { color:#f66; border-color:#402; }
+      .accent { color:var(--accent); }
+      input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
+      form .row { margin:6px 0; }
+      .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+      .scoreboard { width:100%; border-collapse:collapse; }
+      .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
+      .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
+      .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
+      .hidden { display:none; }
+      .team { font-weight:700; }
+      .pick { font-size:13px; color:#c7d7ea; }
+      .lock { color:#ffc861; }
+      .pickslist { margin-top:10px; border-top:1px solid #1f2a37; padding-top:8px; font-size:13px; }
+      .pickslist .entry { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed #1a2432; }
+      .pickslist .entry:last-child { border-bottom:none; }
+      .tag { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid #223045; }
+      .tag.good { color:#0f3; border-color:#174; }
+      .tag.bad { color:#f66; border-color:#402; }
+      .tag.pending { color:#9bb3ce; border-color:#223045; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>LoL Worlds Predictor</h1>
+      <div class="row">
+        <span id="user-info" class="muted"></span>
+        <span id="admin-debug" class="muted" style="margin-left:10px;"></span>
+        <button id="signin">Sign in</button>
+        <button id="signout" class="hidden">Sign out</button>
       </div>
+    </header>
 
-      <div id="admin-panel" class="card hidden">
-        <h3>Admin • Manage Matches</h3>
-        <form id="add-match">
-          <div class="grid2">
-            <input id="teamA" placeholder="Team A (e.g., T1)" required />
-            <input id="teamB" placeholder="Team B (e.g., Gen.G)" required />
-          </div>
-          <div class="row">
-            <label class="muted">Start time</label>
-            <input id="startTime" type="datetime-local" required />
-            <span class="muted">(your local timezone)</span>
-            <div class="spacer"></div>
-            <button type="submit">Add match</button>
-          </div>
-        </form>
+```
+<div class="container">
+  <div class="card notice">
+    <div><strong>How it works:</strong> Pick the winner for each match before it locks (match start time). You get <span id="points-per-correct">1</span> point per correct pick. Admins can add matches and set results.</div>
+  </div>
+
+  <div id="admin-panel" class="card hidden">
+    <h3>Admin • Manage Matches</h3>
+    <form id="add-match">
+      <div class="grid2">
+        <input id="teamA" placeholder="Team A (e.g., T1)" required />
+        <input id="teamB" placeholder="Team B (e.g., Gen.G)" required />
       </div>
-
-      <div class="card">
-        <h3>Upcoming & Past Matches</h3>
-        <div id="matches" class="cards"></div>
+      <div class="row">
+        <label class="muted">Start time</label>
+        <input id="startTime" type="datetime-local" required />
+        <span class="muted">(your local timezone)</span>
+        <div class="spacer"></div>
+        <button type="submit">Add match</button>
       </div>
+    </form>
+  </div>
 
-      <div class="card">
-        <h3>Scoreboard</h3>
-        <table class="scoreboard" id="scoreboard">
-          <thead>
-            <tr><th>Player</th><th>Correct</th><th>Total</th></tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+  <div class="card">
+    <h3>Upcoming Matches</h3>
+    <div id="upcoming" class="cards"></div>
+  </div>
 
-      <div class="footer">Made for friends. Not affiliated with Riot Games.</div>
-    </div>
+  <div class="card">
+    <h3>Past Matches</h3>
+    <div id="past" class="cards"></div>
+  </div>
 
-    <script type="module">
-      const ADMIN_EMAILS = [
-        "pfeuferleon@gmail.com","Jakob.st74@gmail.com"
-      ];
-      const POINTS_PER_CORRECT = 1;
-      document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
+  <div class="card">
+    <h3>Scoreboard</h3>
+    <table class="scoreboard" id="scoreboard">
+      <thead>
+        <tr><th>Player</th><th>Points</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
 
-      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-      import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-      import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+  <div class="footer">Made for friends. Not affiliated with Riot Games.</div>
+</div>
 
-      const firebaseConfig = {
-        apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
-        authDomain: "lol-gummis.firebaseapp.com",
-        projectId: "lol-gummis",
-        storageBucket: "lol-gummis.firebasestorage.app",
-        messagingSenderId: "254929720511",
-        appId: "1:254929720511:web:ad684ca51476b0d870620a",
-        measurementId: "G-SME88855KH"
-      };
+<script type="module">
+  // ======= CONFIG =======
+  const ADMIN_EMAILS = [
+    "pfeuferleon@gmail.com"
+  ];
+  const POINTS_PER_CORRECT = 1; // change if you want later
+  document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
 
-      const app = initializeApp(firebaseConfig);
-      const auth = getAuth(app);
-      const db = getFirestore(app);
+  // ======= Firebase SDK (modular) =======
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+  import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-      const elSignin = document.getElementById('signin');
-      const elSignout = document.getElementById('signout');
-      const elUser = document.getElementById('user-info');
-      const adminPanel = document.getElementById('admin-panel');
+  // *** YOUR FIREBASE CONFIG ***
+  const firebaseConfig = {
+    apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
+    authDomain: "lol-gummis.firebaseapp.com",
+    projectId: "lol-gummis",
+    storageBucket: "lol-gummis.firebasestorage.app",
+    messagingSenderId: "254929720511",
+    appId: "1:254929720511:web:ad684ca51476b0d870620a",
+    measurementId: "G-SME88855KH"
+  };
 
-      elSignin.onclick = async () => {
-        try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); }
-      };
-      elSignout.onclick = async () => { await signOut(auth); };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-      let currentUser = null;
-      function normalizeEmail(e){
-        e = (e||'').trim().toLowerCase();
-        const [local, domain] = e.split('@');
-        if(!local || !domain) return e;
-        if(domain === 'gmail.com' || domain === 'googlemail.com'){
-          const cleanLocal = local.split('+')[0].replace(/\./g,'');
-          return `${cleanLocal}@gmail.com`;
-        }
-        return `${local}@${domain}`;
+  // ======= Auth UI =======
+  const elSignin = document.getElementById('signin');
+  const elSignout = document.getElementById('signout');
+  const elUser = document.getElementById('user-info');
+  const adminPanel = document.getElementById('admin-panel');
+
+  elSignin.onclick = async () => {
+    try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); }
+  };
+  elSignout.onclick = async () => { await signOut(auth); };
+
+  let currentUser = null;
+  function normalizeEmail(e){
+    e = (e||'').trim().toLowerCase();
+    const [local, domain] = e.split('@');
+    if(!local || !domain) return e;
+    if(domain === 'gmail.com' || domain === 'googlemail.com'){
+      const cleanLocal = local.split('+')[0].replace(/\./g,'');
+      return `${cleanLocal}@gmail.com`;
+    }
+    return `${local}@${domain}`;
+  }
+  const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
+  function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
+  function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
+  function updateAdminDebug(){
+    const el = document.getElementById('admin-debug');
+    if(!el) return;
+    el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode';
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    currentUser = user;
+    if (user) {
+      elSignin.classList.add('hidden');
+      elSignout.classList.remove('hidden');
+      elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
+      await setDoc(doc(db, 'users', user.uid), {
+        uid: user.uid,
+        displayName: user.displayName ?? 'Anonymous',
+        email: user.email ?? '',
+        photoURL: user.photoURL ?? '',
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } else {
+      elSignin.classList.remove('hidden');
+      elSignout.classList.add('hidden');
+      elUser.textContent = '';
+    }
+    renderAdmin();
+    updateAdminDebug();
+  });
+
+  // ======= Matches & Picks =======
+  const upcomingEl = document.getElementById('upcoming');
+  const pastEl = document.getElementById('past');
+  const addForm = document.getElementById('add-match');
+
+  addForm?.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const teamA = document.getElementById('teamA').value.trim();
+    const teamB = document.getElementById('teamB').value.trim();
+    const startLocal = document.getElementById('startTime').value; // yyyy-MM-ddTHH:mm
+    if(!teamA || !teamB || !startLocal) return;
+    const startTime = new Date(startLocal);
+    await addDoc(collection(db,'matches'), {
+      teamA, teamB,
+      startTime: startTime,
+      result: null,
+      createdAt: serverTimestamp()
+    });
+    e.target.reset();
+  });
+
+  function fmtDate(d){ return new Date(d).toLocaleString(); }
+  function now(){ return new Date(); }
+  function locked(m){
+    if(!m.startTime) return false;
+    const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime);
+    return now() >= start;
+  }
+
+  const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
+  onSnapshot(matchesQ, async (snap)=>{
+    const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+    // Fetch picks and users once per refresh
+    const [picksSnap, usersSnap] = await Promise.all([
+      getDocs(collection(db,'picks')),
+      getDocs(collection(db,'users'))
+    ]);
+    const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
+    const picksByMatch = new Map(); // matchId -> [{userId, pick}]
+    picksSnap.forEach(p=>{
+      const data = p.data();
+      const list = picksByMatch.get(data.matchId) || [];
+      list.push({ userId: data.userId, pick: data.pick });
+      picksByMatch.set(data.matchId, list);
+    });
+
+    renderMatches(matches, picksByMatch, users);
+    updateScoreboard(matches, picksByMatch, users);
+  });
+
+  async function getUserPick(matchId, uid){
+    if(!uid) return null;
+    const ref = doc(db, 'picks', `${uid}_${matchId}`);
+    const d = await getDoc(ref);
+    return d.exists() ? d.data() : null;
+  }
+
+  async function savePick(match, pick){
+    if(!currentUser){ alert('Sign in to submit picks.'); return; }
+    if(locked(match)) { alert('Match is locked.'); return; }
+    const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
+    await setDoc(ref, {
+      userId: currentUser.uid,
+      userName: currentUser.displayName ?? currentUser.email,
+      matchId: match.id,
+      pick,
+      updatedAt: serverTimestamp()
+    }, { merge:true });
+  }
+
+  function picksListHTML(match, picks, users){
+    if(!picks || picks.length === 0) return '<div class="muted">No picks yet.</div>';
+    const res = match.result; // 'A'|'B'|null
+    return `<div class="pickslist">${picks.map(p=>{
+      const u = users.get(p.userId);
+      const name = u?.displayName || 'Unknown';
+      let tag = '<span class="tag pending">pending</span>';
+      if(res){
+        tag = p.pick === res ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>';
       }
-      const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
-      function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
-      function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
-      function updateAdminDebug(){
-        const el = document.getElementById('admin-debug');
-        if(!el) return;
-        el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode';
-      }
+      const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB;
+      return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`;
+    }).join('')}</div>`;
+  }
 
-      onAuthStateChanged(auth, async (user) => {
-        currentUser = user;
-        if (user) {
-          elSignin.classList.add('hidden');
-          elSignout.classList.remove('hidden');
-          elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
-          await setDoc(doc(db, 'users', user.uid), {
-            uid: user.uid,
-            displayName: user.displayName ?? 'Anonymous',
-            email: user.email ?? '',
-            photoURL: user.photoURL ?? '',
-            updatedAt: serverTimestamp()
-          }, { merge: true });
-        } else {
-          elSignin.classList.remove('hidden');
-          elSignout.classList.add('hidden');
-          elUser.textContent = '';
+  function matchCard(match, picksForMatch, isPast){
+    const container = document.createElement('div');
+    container.className = 'card';
+    const isLocked = locked(match);
+    const result = match.result; // 'A' | 'B' | null
+    const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
+    container.innerHTML = `
+      <div class="row">
+        <div>
+          <div><span class="team">${match.teamA}</span> vs <span class="team">${match.teamB}</span></div>
+          <div class="muted">Starts: ${fmtDate(startTime)}</div>
+          <div class="muted">Open until: ${fmtDate(startTime)}</div>
+        </div>
+        <div class="spacer"></div>
+        ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
+      </div>
+      <div class="row" style="margin-top:10px; gap:12px;">
+        <label class="pick"><input type="radio" name="pick-${match.id}" value="A" ${isPast?'disabled':''}> ${match.teamA}</label>
+        <label class="pick"><input type="radio" name="pick-${match.id}" value="B" ${isPast?'disabled':''}> ${match.teamB}</label>
+        <div class="spacer"></div>
+        ${result ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}</span>` : '<span class="muted">Result: TBD</span>'}
+      </div>
+      ${isAdmin() ? `
+      <div class="row" style="margin-top:8px; gap:8px;">
+        <select id="set-${match.id}">
+          <option value="">Set result...</option>
+          <option value="A">${match.teamA}</option>
+          <option value="B">${match.teamB}</option>
+          <option value="clear">Clear result</option>
+        </select>
+        <button id="apply-${match.id}">Apply</button>
+      </div>`:''}
+      ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
+    `;
+
+    // hook up inputs
+    const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
+    radios.forEach(r=>{ r.addEventListener('change', ()=> savePick(match, r.value)); });
+
+    if(isAdmin()){
+      const sel = container.querySelector(`#set-${match.id}`);
+      const btn = container.querySelector(`#apply-${match.id}`);
+      btn?.addEventListener('click', async ()=>{
+        const v = sel.value;
+        if(v === 'clear') {
+          await updateDoc(doc(db,'matches',match.id), { result: null });
+        } else if(v === 'A' || v === 'B') {
+          await updateDoc(doc(db,'matches',match.id), { result: v });
         }
-        renderAdmin();
-        updateAdminDebug();
       });
+    }
 
-      const matchesEl = document.getElementById('matches');
-      const addForm = document.getElementById('add-match');
-
-      addForm?.addEventListener('submit', async (e)=>{
-        e.preventDefault();
-        const teamA = document.getElementById('teamA').value.trim();
-        const teamB = document.getElementById('teamB').value.trim();
-        const startLocal = document.getElementById('startTime').value;
-        if(!teamA || !teamB || !startLocal) return;
-        const startTime = new Date(startLocal);
-        await addDoc(collection(db,'matches'), {
-          teamA, teamB,
-          startTime: startTime,
-          result: null,
-          createdAt: serverTimestamp()
-        });
-        e.target.reset();
-      });
-
-      function fmtDate(d){ return new Date(d).toLocaleString(); }
-      function now(){ return new Date(); }
-
-      function locked(m){
-        if(!m.startTime) return false;
-        const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime);
-        return now() >= start;
-      }
-
-      const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
-      onSnapshot(matchesQ, async (snap)=>{
-        const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-        renderMatches(matches);
-        updateScoreboard(matches);
-      });
-
-      async function getUserPick(matchId, uid){
-        if(!uid) return null;
-        const ref = doc(db, 'picks', `${uid}_${matchId}`);
-        const d = await getDoc(ref);
-        return d.exists() ? d.data() : null;
-      }
-
-      async function savePick(match, pick){
-        if(!currentUser){ alert('Sign in to submit picks.'); return; }
-        if(locked(match)) { alert('Match is locked.'); return; }
-        const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
-        await setDoc(ref, {
-          userId: currentUser.uid,
-          userName: currentUser.displayName ?? currentUser.email,
-          matchId: match.id,
-          pick,
-          updatedAt: serverTimestamp()
-        }, { merge:true });
-      }
-
-      function matchCard(match){
-        const container = document.createElement('div');
-        container.className = 'card';
-        const isLocked = locked(match);
-        const result = match.result;
-        const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
-        container.innerHTML = `
-          <div class="row">
-            <div>
-              <div><span class="team">${match.teamA}</span> vs <span class="team">${match.teamB}</span></div>
-              <div class="muted">Starts: ${fmtDate(startTime)}</div>
-              <div class="muted">Open until: ${fmtDate(startTime)}</div>
-            </div>
-            <div class="spacer"></div>
-            ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
-          </div>
-          <div class="row" style="margin-top:10px; gap:12px;">
-            <label class="pick"><input type="radio" name="pick-${match.id}" value="A"> ${match.teamA}</label>
-            <label class="pick"><input type="radio" name="pick-${match.id}" value="B"> ${match.teamB}</label>
-            <div class="spacer"></div>
-            ${result ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}</span>` : '<span class="muted">Result: TBD</span>'}
-          </div>
-          ${isAdmin() ? `
-          <div class="row" style="margin-top:8px; gap:8px;">
-            <select id="set-${match.id}">
-              <option value="">Set result...</option>
-              <option value="A">${match.teamA}</option>
-              <option value="B">${match.teamB}</option>
-              <option value="clear">Clear result</option>
-            </select>
-            <button id="apply-${match.id}">Apply</button>
-          </div>`:''}
-        `;
-
-        const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
-        radios.forEach(r=>{
-          r.addEventListener('change', ()=> savePick(match, r.value));
-        });
-
-        if(isAdmin()){
-          const sel = container.querySelector(`#set-${match.id}`);
-          const btn = container.querySelector(`#apply-${match.id}`);
-          btn?.addEventListener('click', async ()=>{
-            const v = sel.value;
-            if(v === 'clear') {
-              await updateDoc(doc(db,'matches',match.id), { result: null });
-            } else if(v === 'A' || v === 'B') {
-              await updateDoc(doc(db,'matches',match.id), { result: v });
-            }
-          });
+    // preselect existing pick for current user
+    if(currentUser){
+      getUserPick(match.id, currentUser.uid).then(p=>{
+        if(p?.pick){
+          const r = container.querySelector(`input[value="${p.pick}"]`);
+          if(r) r.checked = true;
         }
+      });
+    }
+    return container;
+  }
 
-        if(currentUser){
-          getUserPick(match.id, currentUser.uid).then(p=>{
-            if(p?.pick){
-              const r = container.querySelector(`input[value="${p.pick}"]`);
-              if(r) r.checked = true;
-            }
-          });
-        }
-        return container;
-      }
+  function renderMatches(matches, picksByMatch, users){
+    upcomingEl.innerHTML = '';
+    pastEl.innerHTML = '';
+    matches.forEach(m=>{
+      const isPast = locked(m);
+      const picks = picksByMatch.get(m.id) || [];
+      const card = matchCard(m, picks, isPast);
+      (isPast ? pastEl : upcomingEl).appendChild(card);
+    });
+  }
 
-      function renderMatches(matches){
-        matchesEl.innerHTML = '';
-        matches.forEach(m=> matchesEl.appendChild(matchCard(m)) );
-      }
+  // ======= Scoreboard =======
+  const scoreboardBody = document.querySelector('#scoreboard tbody');
+  function updateScoreboard(matches, picksByMatch, users){
+    const resultsByMatch = new Map(matches.filter(m=>m.result).map(m=>[m.id,m.result]));
+    const totals = new Map(); // uid -> {points}
 
-      const scoreboardBody = document.querySelector('#scoreboard tbody');
-      async function updateScoreboard(matches){
-        const picksSnap = await getDocs(collection(db,'picks'));
-        const usersSnap = await getDocs(collection(db,'users'));
-        const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
+    // Calculate points
+    picksByMatch.forEach((picks, matchId)=>{
+      const res = resultsByMatch.get(matchId);
+      if(!res) return; // only count matches with results
+      picks.forEach(p=>{
+        const cur = totals.get(p.userId) || { points:0 };
+        if(p.pick === res) cur.points += POINTS_PER_CORRECT;
+        totals.set(p.userId, cur);
+      });
+    });
 
-        const resultsByMatch = new Map(matches.filter(m=>m.result).map(m=>[m.id,m.result]));
-        const totals = new Map();
+    const rows = Array.from(users.keys()).map(uid=>{
+      const name = users.get(uid)?.displayName || 'Unknown';
+      const points = totals.get(uid)?.points ?? 0;
+      return { name, points };
+    }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
 
-        picksSnap.forEach(p=>{
-          const { userId, matchId, pick } = p.data();
-          const total = totals.get(userId) || { correct:0, total:0 };
-          total.total += 1;
-          if(resultsByMatch.has(matchId)){
-            const res = resultsByMatch.get(matchId);
-            if(res === pick) total.correct += POINTS_PER_CORRECT;
-          }
-          totals.set(userId, total);
-        });
-
-        const rows = Array.from(totals.entries()).map(([uid, stat])=>{
-          const name = users.get(uid)?.displayName || 'Unknown';
-          return { name, correct: stat.correct, total: stat.total };
-        }).sort((a,b)=> b.correct - a.correct || a.name.localeCompare(b.name));
-
-
-        scoreboardBody.innerHTML = rows.map(r=>`<tr><td>${r.name}</td><td>${r.correct}</td><td>${r.total}</td></tr>`).join('');
-      }
-    </script>
+    scoreboardBody.innerHTML = rows.map(r=>`<tr><td>${r.name}</td><td>${r.points}</td></tr>`).join('');
+  }
+</script>
   </body>
 </html>
+
