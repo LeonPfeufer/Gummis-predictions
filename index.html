@@ -127,13 +127,22 @@
         <input id="teamA" placeholder="Team A (e.g., T1)" required />
         <input id="teamB" placeholder="Team B (e.g., Gen.G)" required />
       </div>
-      <div class="row">
-        <label class="muted">Start time</label>
-        <input id="startTime" type="datetime-local" required />
-        <span class="muted">(your local timezone)</span>
-        <div class="spacer"></div>
-        <button type="submit">Add match</button>
-      </div>
+    <div class="row">
+      <label class="muted">Start time</label>
+      <input id="startTime" type="datetime-local" required />
+      <span class="muted">(your local timezone)</span>
+    </div>
+    <div class="row">
+      <label class="muted">Series</label>
+      <select id="series" required>
+        <option value="BO1">Best of 1</option>
+        <option value="BO3">Best of 3</option>
+        <option value="BO5">Best of 5</option>
+      </select>
+      <div class="spacer"></div>
+      <button type="submit">Add match</button>
+    </div>
+
     </form>
   </div>
 
@@ -180,6 +189,36 @@
   ];
   const POINTS_PER_CORRECT = 1; // change if you want later
   document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
+  const POINTS_EXACT = 2; // total points if exact score matches
+
+// pending (unsaved) choices per match: { pick: 'A'|'B', exactScore: '2-1'|'3-2'|null }
+const pending = new Map();
+
+function seriesMaxWins(series){
+  return series === 'BO5' ? 3 : series === 'BO3' ? 2 : 1;
+}
+
+// Build score options for a given series and chosen winner
+// Returns an array of score strings like ["2-0", "2-1"] when winner='A' for BO3
+function scoreOptionsFor(series, winner){
+  const max = seriesMaxWins(series);
+  if (max === 1 || !winner) return []; // Bo1 or no winner selected yet
+  const arr = [];
+  for(let loserWins = 0; loserWins < max; loserWins++){
+    const a = winner === 'A' ? max : loserWins;
+    const b = winner === 'B' ? max : loserWins;
+    arr.push(`${a}-${b}`);
+  }
+  return arr;
+}
+
+// Given a score like "2-1" and series, return 'A' if A has higher wins, 'B' if B
+function winnerFromScore(score){
+  if(!score) return null;
+  const [a,b] = score.split('-').map(n=>parseInt(n,10));
+  if(isNaN(a) || isNaN(b)) return null;
+  return a > b ? 'A' : a < b ? 'B' : null;
+}
 
   // === Team logos (add your uploaded files here) ===
   // Key format: all-caps, no spaces/punctuation (e.g., "G2", "CFO", "KT", "SKT1","AL","FNC","MKOI","TES","100T","BLG","FLY","GENG","HLE","PSG","SW","VKS",)
@@ -317,16 +356,25 @@
   panelUpcoming.addEventListener('click', ()=> expand('upcoming'));
   panelPast.addEventListener('click', ()=> expand('past'));
 
-  addForm?.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const teamA = document.getElementById('teamA').value.trim();
-    const teamB = document.getElementById('teamB').value.trim();
-    const startLocal = document.getElementById('startTime').value; // yyyy-MM-ddTHH:mm
-    if(!teamA || !teamB || !startLocal) return;
-    const startTime = new Date(startLocal);
-    await addDoc(collection(db,'matches'), { teamA, teamB, startTime, result: null, createdAt: serverTimestamp() });
-    e.target.reset();
+ addForm?.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const teamA = document.getElementById('teamA').value.trim();
+  const teamB = document.getElementById('teamB').value.trim();
+  const startLocal = document.getElementById('startTime').value;
+  const series = (document.getElementById('series')?.value || 'BO1').toUpperCase();
+  if(!teamA || !teamB || !startLocal) return;
+  const startTime = new Date(startLocal);
+  await addDoc(collection(db,'matches'), {
+    teamA, teamB,
+    series,                    // <-- NEW
+    startTime,
+    result: null,              // 'A'|'B' when decided
+    resultScore: null,         // e.g. "2-1" or "3-2" for Bo3/Bo5
+    createdAt: serverTimestamp()
   });
+  e.target.reset();
+});
+
 
   function fmtDate(d){ return new Date(d).toLocaleString(); }
   function now(){ return new Date(); }
@@ -352,7 +400,44 @@
   async function getUserPick(matchId, uid){ if(!uid) return null; const ref = doc(db, 'picks', `${uid}_${matchId}`); const d = await getDoc(ref); return d.exists() ? d.data() : null; }
   async function savePick(match, pick){ if(!currentUser){ alert('Sign in to submit picks.'); return; } if(locked(match)) { alert('Match is locked.'); return; } const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`); await setDoc(ref, { userId: currentUser.uid, userName: currentUser.displayName ?? currentUser.email, matchId: match.id, pick, updatedAt: serverTimestamp() }, { merge:true }); }
 
-  function picksListHTML(match, picks, users){ if(!picks || picks.length === 0) return '<div class="muted">No picks yet.</div>'; const res = match.result; return `<div class="pickslist">${picks.map(p=>{ const u = users.get(p.userId); const name = u?.displayName || 'Unknown'; let tag = '<span class="tag pending">pending</span>'; if(res){ tag = p.pick === res ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>'; } const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB; return `<div class="entry"><strong>${name}</strong><span class="muted">picked</span><span class="team">${pickedTeam}</span>${tag}</div>`; }).join('')}</div>`; }
+function picksListHTML(match, picks, users){
+  if (!picks || picks.length === 0) {
+    return '<div class="muted">No picks yet.</div>';
+  }
+
+  const res = match.result;            // 'A' | 'B' | null
+  const resScore = match.resultScore || null;
+
+  const teamName = (pick) => (pick === 'A' ? match.teamA : pick === 'B' ? match.teamB : '—');
+
+  const html = picks.map(p => {
+    const u = users.get(p.userId);
+    const name = u?.displayName || 'Unknown';
+
+    // Tag: pending / correct / exact / wrong
+    let tag = '<span class="tag pending">pending</span>';
+    if (res) {
+      const correctWinner = p.pick && (p.pick === res);
+      const exact = correctWinner && p.exactScore && resScore && (p.exactScore === resScore);
+      tag = exact
+        ? '<span class="tag good">exact</span>'
+        : (correctWinner ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>');
+    }
+
+    const picked = teamName(p.pick);
+    const exactTxt = p.exactScore ? ` ${p.exactScore}` : '';
+
+    return `<div class="entry">
+      <strong>${name}</strong>
+      <span class="muted"> picked </span>
+      <span class="team">${picked}${exactTxt}</span>
+      ${tag}
+    </div>`;
+  }).join('');
+
+  return `<div class="pickslist">${html}</div>`;
+}
+
 
   function previewTile(match){
   const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
@@ -378,57 +463,187 @@
 
 
   function matchCard(match, picksForMatch, isPast, users){
-    const container = document.createElement('div');
-    container.className = 'card';
-    const isLocked = locked(match);
-    const result = match.result;
-    const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
-    container.innerHTML = `
-      <div class="row">
+  const container = document.createElement('div');
+  container.className = 'card';
+  const isLocked = locked(match);
+  const result = match.result;            // 'A'|'B'|null
+  const resultScore = match.resultScore;  // e.g., "2-1" | null
+  const series = (match.series || 'BO1').toUpperCase();
+  const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
+
+  // Initialize pending state for this match if needed
+  if(!pending.has(match.id)) pending.set(match.id, { pick:null, exactScore:null });
+
+  container.innerHTML = `
+    <div class="row">
+      <div>
         <div>
-          <div>
           <span>${logoHTML(match.teamA,'lg')}</span><span class="team">${match.teamA}</span>
           <span style="margin:0 6px;">vs</span>
           <span>${logoHTML(match.teamB,'lg')}</span><span class="team">${match.teamB}</span>
-          </div>
-
-          <div class="muted">Starts: ${fmtDate(startTime)}</div>
-          <div class="muted">Open until: ${fmtDate(startTime)}</div>
+          <span class="muted" style="margin-left:8px;">(${series})</span>
         </div>
-        <div class="spacer"></div>
-        ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
+        <div class="muted">Starts: ${fmtDate(startTime)}</div>
+        <div class="muted">Open until: ${fmtDate(startTime)}</div>
       </div>
-      <div class="row" style="margin-top:10px; gap:12px;">
-        <label class="pick"><input type="radio" name="pick-${match.id}" value="A" ${isPast?'disabled':''}> ${match.teamA}</label>
-        <label class="pick"><input type="radio" name="pick-${match.id}" value="B" ${isPast?'disabled':''}> ${match.teamB}</label>
-        <div class="spacer"></div>
-        ${result ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}</span>` : '<span class="muted">Result: TBD</span>'}
-      </div>
+      <div class="spacer"></div>
+      ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
+    </div>
+
+    <div class="row" style="margin-top:10px; gap:12px;">
+      <label class="pick"><input type="radio" name="pick-${match.id}" value="A" ${isPast?'disabled':''}> ${match.teamA}</label>
+      <label class="pick"><input type="radio" name="pick-${match.id}" value="B" ${isPast?'disabled':''}> ${match.teamB}</label>
+      ${series !== 'BO1' ? `
+      <div class="row" style="gap:6px; align-items:center;">
+        <span class="muted">Exact:</span>
+        <select id="score-${match.id}" ${isPast?'disabled':''} style="min-width:90px;"></select>
+      </div>` : ``}
+      <div class="spacer"></div>
+      ${result 
+        ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}${resultScore ? ' '+resultScore : ''}</span>`
+        : '<span class="muted">Result: TBD</span>'}
+    </div>
+
+    <div class="row" style="margin-top:8px; gap:8px;">
+      ${!isPast ? `<button id="save-${match.id}">Save changes</button>` : ``}
       ${isAdmin() ? `
-      <div class="row" style="margin-top:8px; gap:8px;">
         <select id="set-${match.id}">
-          <option value="">Set result...</option>
+          <option value="">Set winner...</option>
           <option value="A">${match.teamA}</option>
           <option value="B">${match.teamB}</option>
           <option value="clear">Clear result</option>
         </select>
+        ${series !== 'BO1' ? `
+          <select id="setscore-${match.id}">
+            <option value="">Set score...</option>
+            ${series === 'BO3' ? `<option>2-0</option><option>2-1</option><option>1-2</option><option>0-2</option>` : ``}
+            ${series === 'BO5' ? `<option>3-0</option><option>3-1</option><option>3-2</option><option>2-3</option><option>1-3</option><option>0-3</option>` : ``}
+          </select>` : ``}
         <button id="apply-${match.id}">Apply</button>
-      </div>`:''}
-      ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
-    `;
+      ` : ``}
+    </div>
 
-    const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
-    radios.forEach(r=>{ r.addEventListener('change', ()=> savePick(match, r.value)); });
+    ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
+  `;
 
-    if(isAdmin()){
-      const sel = container.querySelector(`#set-${match.id}`);
-      const btn = container.querySelector(`#apply-${match.id}`);
-      btn?.addEventListener('click', async ()=>{ const v = sel.value; if(v === 'clear') { await updateDoc(doc(db,'matches',match.id), { result: null }); } else if(v === 'A' || v === 'B') { await updateDoc(doc(db,'matches',match.id), { result: v }); } });
-    }
+  const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
+  const scoreSel = container.querySelector(`#score-${match.id}`);
+  const saveBtn  = container.querySelector(`#save-${match.id}`);
 
-    if(currentUser){ getUserPick(match.id, currentUser.uid).then(p=>{ if(p?.pick){ const r = container.querySelector(`input[value="${p.pick}"]`); if(r) r.checked = true; } }); }
-    return container;
+  // Load existing pick into pending (preselect UI)
+  if(currentUser){
+    getUserPick(match.id, currentUser.uid).then(p=>{
+      // p may have { pick, exactScore }
+      if(p?.pick){
+        const r = container.querySelector(`input[value="${p.pick}"]`);
+        if(r) r.checked = true;
+        const s = pending.get(match.id) || {};
+        s.pick = p.pick;
+        s.exactScore = p.exactScore || null;
+        pending.set(match.id, s);
+        // populate scores after pick is known
+        if(scoreSel && series !== 'BO1'){
+          refreshScoreOptions(scoreSel, series, s.pick, s.exactScore);
+        }
+      } else if(scoreSel && series !== 'BO1'){
+        refreshScoreOptions(scoreSel, series, null, null);
+      }
+    });
+  } else if(scoreSel && series !== 'BO1'){
+    refreshScoreOptions(scoreSel, series, null, null);
   }
+
+  // When user changes winner, update pending + score options
+  radios.forEach(r=>{
+    r.addEventListener('change', ()=>{
+      const cur = pending.get(match.id) || {};
+      cur.pick = r.value;
+      // Reset exactScore when winner changes
+      cur.exactScore = null;
+      pending.set(match.id, cur);
+      if(scoreSel && series !== 'BO1'){
+        refreshScoreOptions(scoreSel, series, cur.pick, null);
+      }
+    });
+  });
+
+  // When user changes exact score
+  scoreSel?.addEventListener('change', ()=>{
+    const cur = pending.get(match.id) || {};
+    cur.exactScore = scoreSel.value || null;
+    pending.set(match.id, cur);
+    // If user picks a score that implies winner, ensure pick matches it
+    const implied = winnerFromScore(cur.exactScore);
+    if(implied && cur.pick && implied !== cur.pick){
+      // keep the explicit pick as source of truth; re-sync options
+      refreshScoreOptions(scoreSel, series, cur.pick, cur.exactScore);
+    }
+  });
+
+  // Save changes button
+  saveBtn?.addEventListener('click', async ()=>{
+    if(!currentUser){ alert('Sign in to submit picks.'); return; }
+    if(locked(match)) { alert('Match is locked.'); return; }
+    const cur = pending.get(match.id) || {};
+    if(!cur.pick){ alert('Please choose a winner first.'); return; }
+    // For Bo3/Bo5, exactScore is optional; if provided, it must align with pick
+    if(series !== 'BO1' && cur.exactScore){
+      const implied = winnerFromScore(cur.exactScore);
+      if(!implied){ alert('Invalid exact score.'); return; }
+      if(implied !== cur.pick){
+        alert('Exact score does not match your selected winner. Please adjust.');
+        return;
+      }
+    }
+    await savePickWithScore(match, cur.pick, series === 'BO1' ? null : (cur.exactScore || null));
+    alert('Saved ✅');
+  });
+
+  // Admin apply button
+  if(isAdmin()){
+    const selWinner = container.querySelector(`#set-${match.id}`);
+    const selScore  = container.querySelector(`#setscore-${match.id}`);
+    const btnApply  = container.querySelector(`#apply-${match.id}`);
+    btnApply?.addEventListener('click', async ()=>{
+      if(selWinner?.value === 'clear'){
+        await updateDoc(doc(db,'matches',match.id), { result: null, resultScore: null });
+        return;
+      }
+      // If a score is set, derive winner from it
+      if(selScore && selScore.value){
+        const w = winnerFromScore(selScore.value);
+        if(!w){ alert('Invalid score.'); return; }
+        await updateDoc(doc(db,'matches',match.id), { result: w, resultScore: selScore.value });
+      } else if(selWinner && (selWinner.value === 'A' || selWinner.value === 'B')){
+        // Winner only (e.g., BO1)
+        await updateDoc(doc(db,'matches',match.id), { result: selWinner.value, resultScore: null });
+      }
+    });
+  }
+
+  return container;
+}
+
+// Helper to populate the exact score select based on series & winner
+function refreshScoreOptions(selectEl, series, winner, selected){
+  const opts = scoreOptionsFor(series, winner);
+  selectEl.innerHTML = `<option value="">—</option>` + opts.map(s=>`<option value="${s}">${s}</option>`).join('');
+  if(selected && opts.includes(selected)) selectEl.value = selected;
+}
+
+// Write pick + optional exact score
+async function savePickWithScore(match, pick, exactScore){
+  const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
+  await setDoc(ref, {
+    userId: currentUser.uid,
+    userName: currentUser.displayName ?? currentUser.email,
+    matchId: match.id,
+    pick,
+    exactScore: exactScore || null,
+    updatedAt: serverTimestamp()
+  }, { merge:true });
+}
+
 
   function renderPreviews(future, past, picksByMatch){
     previewUpcomingEl.innerHTML = '';
@@ -453,12 +668,39 @@
   // ======= Scoreboard =======
   const scoreboardBody = document.querySelector('#scoreboard tbody');
   function updateScoreboard(matches, picksByMatch, users){
-    const resultsByMatch = new Map(matches.filter(m=>m.result).map(m=>[m.id,m.result]));
-    const totals = new Map();
-    picksByMatch.forEach((picks, matchId)=>{ const res = resultsByMatch.get(matchId); if(!res) return; picks.forEach(p=>{ const cur = totals.get(p.userId) || { points:0 }; if(p.pick === res) cur.points += POINTS_PER_CORRECT; totals.set(p.userId, cur); }); });
-    const rows = Array.from(users.keys()).map(uid=>{ const name = users.get(uid)?.displayName || 'Unknown'; const points = totals.get(uid)?.points ?? 0; return { name, points }; }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
-    scoreboardBody.innerHTML = rows.map((r,i)=>{ const rank=i+1; const trClass = rank<=3?`tr-rank-${rank}`:''; return `<tr class="${trClass}"><td><span class="rank-badge">${rank}.</span></td><td>${r.name}</td><td>${r.points}</td></tr>`; }).join('');
-  }
+  // Build quick lookup for match results
+  const results = new Map(matches.filter(m=>m.result).map(m=>[m.id, { winner:m.result, score:m.resultScore || null }]));
+  const totals = new Map(); // uid -> { points }
+
+  // Calculate points
+  picksByMatch.forEach((picks, matchId)=>{
+    const res = results.get(matchId);
+    if(!res) return; // only count matches with results
+    picks.forEach(p=>{
+      const cur = totals.get(p.userId) || { points:0 };
+      const correctWinner = p.pick && (p.pick === res.winner);
+      const exact = correctWinner && p.exactScore && res.score && (p.exactScore === res.score);
+      cur.points += exact ? POINTS_EXACT : (correctWinner ? POINTS_PER_CORRECT : 0);
+      totals.set(p.userId, cur);
+    });
+  });
+
+  const rows = Array.from(users.keys()).map(uid=>{
+    const name = users.get(uid)?.displayName || 'Unknown';
+    const points = totals.get(uid)?.points ?? 0;
+    return { name, points };
+  }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
+
+  scoreboardBody.innerHTML = rows.map((r,i)=>{
+    const rank=i+1; const trClass = rank<=3 ? `tr-rank-${rank}` : '';
+    return `<tr class="${trClass}">
+      <td><span class="rank-badge">${rank}.</span></td>
+      <td>${r.name}</td>
+      <td>${r.points}</td>
+    </tr>`;
+  }).join('');
+}
+
 </script>
 ```
 
