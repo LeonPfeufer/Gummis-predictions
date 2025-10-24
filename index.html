@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -20,262 +19,185 @@
       h1 { font-size:20px; margin:0; letter-spacing:0.4px; }
       .container { max-width:1100px; margin:24px auto; padding:0 16px; }
 
-```
-  /* Cards (full match cards) */
-  .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
-  .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
-  .card h3 { margin:0 0 10px; font-size:16px; }
-  .muted { color:var(--muted); font-size:13px; }
-  .row { display:flex; align-items:center; gap:8px; }
-  .spacer { flex:1; }
-  button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
-  button:hover { filter:brightness(1.1); }
-  .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
-  .good { color:#0f3; border-color:#174; }
-  .bad { color:#f66; border-color:#402; }
-  .accent { color:var(--accent); }
-  input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
-  form .row { margin:6px 0; }
-  .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+      /* Cards (full match cards) */
+      .cards { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; }
+      .card { background:var(--card); border:1px solid #202b39; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(0,0,0,0.25); }
+      .card h3 { margin:0 0 10px; font-size:16px; }
+      .muted { color:var(--muted); font-size:13px; }
+      .row { display:flex; align-items:center; gap:8px; }
+      .spacer { flex:1; }
+      button, input[type="submit"] { background:#182434; color:var(--text); border:1px solid #273445; padding:10px 14px; border-radius:12px; cursor:pointer; font-weight:600; }
+      button:hover { filter:brightness(1.1); }
+      .pill { display:inline-block; padding:2px 10px; border-radius:999px; border:1px solid #223045; font-size:12px; }
+      .good { color:#0f3; border-color:#174; }
+      .bad { color:#f66; border-color:#402; }
+      .accent { color:var(--accent); }
+      input, select { background:#0f1622; color:var(--text); border:1px solid #223045; padding:10px 12px; border-radius:10px; }
+      form .row { margin:6px 0; }
+      .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
 
-  /* Scoreboard */
-  .scoreboard { width:100%; border-collapse:collapse; }
-  .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
-  .rank-badge{ display:inline-block; min-width:2ch; text-align:right; margin-right:10px; font-weight:700; color:#a9b6c8; }
-  .tr-rank-1 td { background: var(--gold-bg); color: var(--podium-text); }
-  .tr-rank-2 td { background: var(--silver-bg); color: var(--podium-text); }
-  .tr-rank-3 td { background: var(--bronze-bg); color: var(--podium-text); }
-  .tr-rank-1 .rank-badge, .tr-rank-2 .rank-badge, .tr-rank-3 .rank-badge { color: var(--podium-text); }
-  .scoreboard tbody tr:not(.tr-rank-1):not(.tr-rank-2):not(.tr-rank-3) td { color: var(--text); }
+      /* Scoreboard */
+      .scoreboard { width:100%; border-collapse:collapse; }
+      .scoreboard th, .scoreboard td { text-align:left; padding:10px; border-bottom:1px solid #1f2a37; }
+      .rank-badge{ display:inline-block; min-width:2ch; text-align:right; margin-right:10px; font-weight:700; color:#a9b6c8; }
+      .tr-rank-1 td { background: var(--gold-bg); color: var(--podium-text); }
+      .tr-rank-2 td { background: var(--silver-bg); color: var(--podium-text); }
+      .tr-rank-3 td { background: var(--bronze-bg); color: var(--podium-text); }
+      .tr-rank-1 .rank-badge, .tr-rank-2 .rank-badge, .tr-rank-3 .rank-badge { color: var(--podium-text); }
+      .scoreboard tbody tr:not(.tr-rank-1):not(.tr-rank-2):not(.tr-rank-3) td { color:var(--text); }
 
-  .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
-  .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
-  .hidden { display:none; }
-  .team { font-weight:700; }
-  .pick { font-size:13px; color:#c7d7ea; }
-  .lock { color:#ffc861; }
-  .pickslist { margin-top:10px; border-top:1px solid #1f2a37; padding-top:8px; font-size:13px; }
-  .pickslist .entry { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed #1a2432; }
-  .pickslist .entry:last-child { border-bottom:none; }
-  .tag { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid #223045; }
-  .tag.good { color:#0f3; border-color:#174; }
-  .tag.bad { color:#f66; border-color:#402; }
-  .tag.pending { color:#9bb3ce; border-color:#223045; }
+      .footer { text-align:center; color:var(--muted); font-size:12px; padding:20px; }
+      .notice { background:#0f1a28; border:1px dashed #27415f; padding:10px 12px; border-radius:10px; font-size:13px; color:#9bb3ce; }
+      .hidden { display:none; }
+      .team { font-weight:700; }
+      .pick { font-size:13px; color:#c7d7ea; }
+      .lock { color:#ffc861; }
+      .pickslist { margin-top:10px; border-top:1px solid #1f2a37; padding-top:8px; font-size:13px; }
+      .pickslist .entry { display:flex; align-items:center; gap:8px; padding:6px 0; border-bottom:1px dashed #1a2432; }
+      .pickslist .entry:last-child { border-bottom:none; }
+      .tag { font-size:11px; padding:2px 8px; border-radius:999px; border:1px solid #223045; }
+      .tag.good { color:#0f3; border-color:#174; }
+      .tag.bad { color:#f66; border-color:#402; }
+      .tag.pending { color:#9bb3ce; border-color:#223045; }
       
-  /* --- Past matches redesign --- */
-.past-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
-  gap: 16px;
-}
+      /* --- Team logos --- */
+      .logo-sm { width:24px; height:24px; object-fit:contain; vertical-align:middle; }
+      .logo-lg { width:32px; height:32px; object-fit:contain; vertical-align:middle; margin-right:6px; }
 
-.past-card {
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  padding: 12px;
-  background: rgba(255,255,255,0.02);
-}
+      /* Fallback badge when a logo is missing */
+      .logo-badge {
+        display:inline-flex; align-items:center; justify-content:center;
+        width:24px; height:24px; border-radius:6px;
+        background:#0f1622; border:1px solid #223045; color:#cdd9ea;
+        font-size:11px; font-weight:800; letter-spacing:.5px;
+      }
+      .logo-badge.lg { width:32px; height:32px; font-size:12px; margin-right:6px; }
 
-.past-card-header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-.past-card-header .team-logo {
-  height: 64px;
-  width: 64px;
-  object-fit: contain;
-}
-.past-card-header .vs {
-  text-align: center;
-  font-weight: bold;
-}
-/* === Previous matches: card look & separation (glow) === */
-.past-card {
-  border-radius: 14px;
-  background: var(--panel, #121218);
-  /* subtle outline + soft outer glow for separation */
-  box-shadow:
-    0 0 0 1px rgba(255,255,255,.06),
-    0 6px 24px rgba(0,0,0,.35),
-    0 0 22px rgba(255, 0, 120, .10);
-  padding: 14px;
-}
+      /* Upcoming/Past visual style */
+      #upcoming .card { background: var(--card-upcoming); border: 1px solid var(--border-upcoming); box-shadow: 0 0 10px var(--border-upcoming);} 
+      #past .card { background: var(--card-past); border: 1px solid var(--border-past); box-shadow: 0 0 10px var(--border-past);} 
+      #upcoming .card:hover { box-shadow: 0 0 18px var(--border-upcoming); transform: translateY(-3px); transition: all 0.2s ease-in-out;} 
+      #past .card:hover { box-shadow: 0 0 18px var(--border-past); transform: translateY(-3px); transition: all 0.2s ease-in-out;}
 
-.past-card + .past-card {
-  /* space between vertically stacked cards on narrow screens */
-  margin-top: 12px;
-}
+      /* PANELS (big rounded squares with previews) */
+      .panels { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
+      @media (max-width: 860px){ .panels { grid-template-columns:1fr; } }
+      .panel { background:#0f1a28; border:1px solid #27415f; border-radius:24px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); cursor:pointer; }
+      .panel:hover { border-color:#3a5a80; }
+      .panel-title { font-size:20px; font-weight:800; margin:0 0 8px; }
+      .preview-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+      .preview-tile { background:#0f1622; border:1px solid #223045; border-radius:12px; padding:10px; min-height:64px; display:flex; flex-direction:column; justify-content:center; }
+      .preview-tile .teams { font-size:12px; line-height:1.2; color:#cdd9ea; }
+      .preview-tile .winA, .preview-tile .winB { font-weight:800; }
+      .preview-tile .winA { color:#69e08a; }
+      .preview-tile .winB { color:#e57474; }
+      .preview-empty { color:var(--muted); font-size:13px; grid-column:1/-1; }
 
-/* compact two-column layout keeps breathing room */
-.past-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-@media (max-width: 920px){
-  .past-grid { grid-template-columns: 1fr; }
-}
+      /* Details (expandable areas) */
+      .panel-details { margin-top:12px; }
+      .panel-details.hidden { display:none; }
 
-/* header with two logos + big result in center */
-.past-header {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 10px 14px;
-  border-radius: 12px;
-  background: rgba(255,255,255,.03);
-}
-
-/* team logos */
-.past-header .team {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-}
-.past-header img.logo {
-  width: 56px;
-  height: 56px;
-  object-fit: contain;
-}
-
-/* BIG result between the logos */
-.past-header .result-badge {
-  min-width: 120px;
-  text-align: center;
-  font-size: 28px;
-  line-height: 1;
-  font-weight: 800;
-  letter-spacing: .8px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  background: #1A1A22;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
-}
-
-/* admin controls (small & inline) */
-.past-admin {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding: 10px 0 2px;
-}
-.past-admin .btn {
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 8px;
-  background: #20202A;
-  border: 1px solid rgba(255,255,255,.08);
-}
-.past-admin .btn.primary {
-  background: var(--accent, #FF1F8A);
-  border-color: transparent;
-  color: #fff;
-}
-
-/* picks list row look */
-.picks {
-  margin-top: 10px;
-  display: grid;
-  grid-template-columns: 1fr auto auto auto;
-  gap: 8px 10px;
-  align-items: center;
-}
-.picks .user {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.picks img.pick-logo {
-  width: 24px; height: 24px; object-fit: contain;
-}
-.picks .pick-score {
-  font-weight: 700;
-  padding: 4px 6px;
-  border-radius: 6px;
-  background: rgba(255,255,255,.05);
-}
-
-/* result color square */
-.result-dot {
-  width: 16px; height: 16px; border-radius: 4px;
-  box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 0 10px rgba(0,0,0,.35);
-}
-.result-dot.exact   { background: #18C13E; } /* green */
-.result-dot.correct { background: #E1B600; } /* yellow */
-.result-dot.wrong   { background: #E03A3A; } /* red */
-
-.bet-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-.bet-table td {
-  padding: 6px 8px;
-  border-bottom: 1px dashed rgba(255,255,255,0.05);
-}
-.bet-table tr:last-child td {
-  border-bottom: none;
-}
-.bet-team-logo {
-  height: 20px;
-  width: 20px;
-  object-fit: contain;
-  vertical-align: middle;
-}
-.bet-square {
-  width: 16px;
-  height: 16px;
-  display: inline-block;
-  border-radius: 4px;
-}
-.bet-square.wrong { background: #e74c3c; }   /* red */
-.bet-square.correct { background: #f1c40f; } /* yellow */
-.bet-square.exact { background: #2ecc71; }   /* green */
-
-  /* --- Team logos --- */
-  .logo-sm { width:24px; height:24px; object-fit:contain; vertical-align:middle; }
-  .logo-lg { width:32px; height:32px; object-fit:contain; vertical-align:middle; margin-right:6px; }
-
-  /* Fallback badge when a logo is missing */
-  .logo-badge {
-  display:inline-flex; align-items:center; justify-content:center;
-  width:24px; height:24px; border-radius:6px;
-  background:#0f1622; border:1px solid #223045; color:#cdd9ea;
-  font-size:11px; font-weight:800; letter-spacing:.5px;
-  }
-  .logo-badge.lg { width:32px; height:32px; font-size:12px; margin-right:6px; }
-
-      
-  /* Upcoming/Past visual style */
-  #upcoming .card { background: var(--card-upcoming); border: 1px solid var(--border-upcoming); box-shadow: 0 0 10px var(--border-upcoming);} 
-  #past .card { background: var(--card-past); border: 1px solid var(--border-past); box-shadow: 0 0 10px var(--border-past);} 
-  #upcoming .card:hover { box-shadow: 0 0 18px var(--border-upcoming); transform: translateY(-3px); transition: all 0.2s ease-in-out;} 
-  #past .card:hover { box-shadow: 0 0 18px var(--border-past); transform: translateY(-3px); transition: all 0.2s ease-in-out;}
-
-  /* PANELS (big rounded squares with previews) */
-  .panels { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
-  @media (max-width: 860px){ .panels { grid-template-columns:1fr; } }
-  .panel { background:#0f1a28; border:1px solid #27415f; border-radius:24px; padding:16px; box-shadow:0 8px 24px rgba(0,0,0,0.25); cursor:pointer; }
-  .panel:hover { border-color:#3a5a80; }
-  .panel-title { font-size:20px; font-weight:800; margin:0 0 8px; }
-  .preview-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
-  .preview-tile { background:#0f1622; border:1px solid #223045; border-radius:12px; padding:10px; min-height:64px; display:flex; flex-direction:column; justify-content:center; }
-  .preview-tile .teams { font-size:12px; line-height:1.2; color:#cdd9ea; }
-  .preview-tile .winA, .preview-tile .winB { font-weight:800; }
-  .preview-tile .winA { color:#69e08a; }
-  .preview-tile .winB { color:#e57474; }
-  .preview-empty { color:var(--muted); font-size:13px; grid-column:1/-1; }
-
-  /* Details (expandable areas) */
-  .panel-details { margin-top:12px; }
-  .panel-details.hidden { display:none; }
-</style>
-```
-
+      /* --- Past matches (2-col + glow + big result) --- */
+      .past-grid{
+        display:grid;
+        grid-template-columns: repeat(2, minmax(0,1fr));
+        gap:16px;
+      }
+      @media (max-width: 920px){
+        .past-grid{ grid-template-columns:1fr; }
+      }
+      .past-card{
+        border-radius:14px;
+        background: var(--card-past, #1c161a);
+        box-shadow:
+          0 0 0 1px rgba(255,255,255,.08),
+          0 6px 24px rgba(0,0,0,.35),
+          0 0 22px rgba(255, 0, 120, .12);  /* soft outer glow for separation */
+        padding:14px;
+      }
+      .past-header{
+        display:grid;
+        grid-template-columns:1fr auto 1fr;
+        align-items:center;
+        gap:12px;
+        padding:10px 10px 14px;
+        border-radius:12px;
+        background: rgba(255,255,255,.03);
+      }
+      .past-header .team{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        gap:8px;
+      }
+      .past-header img.logo{
+        width:64px;
+        height:64px;
+        object-fit:contain;
+      }
+      /* BIG result between the logos, with colon */
+      .past-header .result-badge{
+        min-width:140px;
+        text-align:center;
+        font-size:32px;
+        line-height:1;
+        font-weight:900;
+        letter-spacing:.6px;
+        padding:10px 16px;
+        border-radius:12px;
+        background:#1A1A22;
+        box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
+      }
+      /* compact admin controls */
+      .past-admin{
+        display:flex;
+        flex-wrap:wrap;
+        gap:8px;
+        padding:10px 0 2px;
+      }
+      .past-admin .btn{
+        padding:6px 10px;
+        font-size:12px;
+        border-radius:8px;
+        background:#20202A;
+        border:1px solid rgba(255,255,255,.08);
+        color:var(--text);
+      }
+      .past-admin .btn.primary{
+        background: var(--accent, #7cc5ff);
+        border-color: transparent;
+        color:#0b0f14;
+        font-weight:700;
+      }
+      /* picks grid: user • logo • score • result square */
+      .picks{
+        margin-top:10px;
+        display:grid;
+        grid-template-columns: 1fr auto auto auto;
+        gap:8px 10px;
+        align-items:center;
+      }
+      .picks .user{
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+      }
+      .picks img.pick-logo{ width:24px; height:24px; object-fit:contain; }
+      .picks .pick-score{
+        font-weight:700;
+        padding:4px 6px;
+        border-radius:6px;
+        background: rgba(255,255,255,.05);
+      }
+      /* result color square */
+      .result-dot{
+        width:16px; height:16px; border-radius:4px;
+        box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 0 10px rgba(0,0,0,.35);
+      }
+      .result-dot.exact   { background:#18C13E; } /* green */
+      .result-dot.correct { background:#E1B600; } /* yellow */
+      .result-dot.wrong   { background:#E03A3A; } /* red */
+    </style>
   </head>
   <body>
     <header>
@@ -288,824 +210,695 @@
       </div>
     </header>
 
-```
-<div class="container">
-  <div class="card notice">
-    <div><strong>How it works:</strong> Pick the winner for each match before it locks (match start time). You get <span id="points-per-correct">1</span> point per correct pick. Admins can add matches and set results.</div>
-  </div>
-
-  <div id="admin-panel" class="card hidden">
-    <h3>Admin • Manage Matches</h3>
-    <form id="add-match">
-      <div class="grid2">
-        <input id="teamA" placeholder="Team A (e.g., T1)" required />
-        <input id="teamB" placeholder="Team B (e.g., Gen.G)" required />
+    <div class="container">
+      <div class="card notice">
+        <div><strong>How it works:</strong> Pick the winner for each match before it locks (match start time). You get <span id="points-per-correct">1</span> point per correct pick. Admins can add matches and set results.</div>
       </div>
-    <div class="row">
-      <label class="muted">Start time</label>
-      <input id="startTime" type="datetime-local" required />
-      <span class="muted">(your local timezone)</span>
-    </div>
-    <div class="row">
-      <label class="muted">Series</label>
-      <select id="series" required>
-        <option value="BO1">Best of 1</option>
-        <option value="BO3">Best of 3</option>
-        <option value="BO5">Best of 5</option>
-      </select>
-      <div class="spacer"></div>
-      <button type="submit">Add match</button>
-    </div>
 
-    </form>
-  </div>
+      <div id="admin-panel" class="card hidden">
+        <h3>Admin • Manage Matches</h3>
+        <form id="add-match">
+          <div class="grid2">
+            <input id="teamA" placeholder="Team A (e.g., T1)" required />
+            <input id="teamB" placeholder="Team B (e.g., Gen.G)" required />
+          </div>
+          <div class="row">
+            <label class="muted">Start time</label>
+            <input id="startTime" type="datetime-local" required />
+            <span class="muted">(your local timezone)</span>
+          </div>
+          <div class="row">
+            <label class="muted">Series</label>
+            <select id="series" required>
+              <option value="BO1">Best of 1</option>
+              <option value="BO3">Best of 3</option>
+              <option value="BO5">Best of 5</option>
+            </select>
+            <div class="spacer"></div>
+            <button type="submit">Add match</button>
+          </div>
+        </form>
+      </div>
 
-  <!-- PANELS row -->
-  <div class="panels">
-    <div id="panel-upcoming" class="panel" role="button" aria-expanded="false">
-      <div class="panel-title">Upcoming matches</div>
-      <div class="preview-grid" id="preview-upcoming"></div>
-    </div>
-    <div id="panel-past" class="panel" role="button" aria-expanded="false">
-      <div class="panel-title">Previous matches</div>
-      <div class="preview-grid" id="preview-past"></div>
-    </div>
-  </div>
-
-  <!-- Details (expand/collapse) -->
-  <div id="details-upcoming" class="panel-details hidden">
-    <div class="card"><h3>Upcoming Matches</h3><div id="upcoming" class="cards"></div></div>
-  </div>
-  <div id="details-past" class="panel-details hidden">
-    <div class="card">
-  <h3>Past Matches</h3>
-  <!-- new grid container for redesigned past matches -->
-  <div id="past-matches"></div>
-      // ===================== PREVIOUS MATCHES — START =====================
-/**
- * Inputs expected to already exist in your script:
- *   - past: array of finished matches (each: { id, team1, team2, result, resultScore, ... })
- *   - users: array of all users (each: { id, name, ... })
- *   - picksByMatch: Map(matchId => array of picks)
- *   - isAdmin: boolean for current user
- *   - teamLogoUrl: function(teamId) => logo URL (rename below if yours differs)
- *
- * If your names differ, map them once here:
- */
-// // Example mappings if your variables have different names:
-// const past        = finishedMatches;         // <- if yours is 'finishedMatches'
-// const users       = allUsers;                // <- if yours is 'allUsers'
-// const picksByMatch = picksGroupedByMatch;   // <- if different
-// const isAdmin     = currentUser?.isAdmin;    // <- if different
-// const teamLogoUrl = getTeamLogo;            // <- if your logo helper has another name
-
-// Build users map once
-const usersById = new Map(users.map(u => [u.id, u]));
-
-// Grab the container (use your id here if not "past-matches")
-const pastContainer = document.getElementById("past-matches");
-// If your project uses a different id, change the line above accordingly.
-if (!pastContainer) {
-  console.warn('Missing #past-matches container');
-} else {
-  // Clear and create a 2-column grid wrapper
-  pastContainer.innerHTML = "";
-  const grid = document.createElement("div");
-  grid.className = "past-grid";
-
-  // Render each finished match as a glowing card
-  past.forEach(m => {
-    const picks = (picksByMatch && picksByMatch.get(m.id)) || [];
-    const card = renderPastMatchCard(
-      m,
-      picks,
-      usersById,
-      !!isAdmin,
-      { teamLogoUrl: (id) => teamLogoUrl(id) } // <- keep or rename to your helper
-    );
-    grid.appendChild(card);
-  });
-
-  pastContainer.appendChild(grid);
-}
-// ===================== PREVIOUS MATCHES — END =====================
-
-</div>
-    
-<div id="past" class="cards"></div></div>
-  </div>
-
-  <div class="card">
-    <h3>Scoreboard</h3>
-    <table class="scoreboard" id="scoreboard">
-      <thead>
-        <tr><th style="width:40px;"></th><th>Player</th><th>Points</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div class="footer">Made for friends. Not affiliated with Riot Games.</div>
-</div>
-
-<script type="module">
-  // ======= CONFIG =======
-  const ADMIN_EMAILS = [
-    "pfeuferleon@gmail.com",
-    "Jakob.st74@gmail.com",
-    "Kbisselik@gmail.com",
-    "tehjooker@gmail.com"
-  ];
-  const POINTS_PER_CORRECT = 1; // change if you want later
-  document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
-  const POINTS_EXACT = 2; // total points if exact score matches
-
-// pending (unsaved) choices per match: { pick: 'A'|'B', exactScore: '2-1'|'3-2'|null }
-const pending = new Map();
-
-function seriesMaxWins(series){
-  return series === 'BO5' ? 3 : series === 'BO3' ? 2 : 1;
-}
-
-// Build score options for a given series and chosen winner
-// Returns an array of score strings like ["2-0", "2-1"] when winner='A' for BO3
-function scoreOptionsFor(series, winner){
-  const max = seriesMaxWins(series);
-  if (max === 1 || !winner) return []; // Bo1 or no winner selected yet
-  const arr = [];
-  for(let loserWins = 0; loserWins < max; loserWins++){
-    const a = winner === 'A' ? max : loserWins;
-    const b = winner === 'B' ? max : loserWins;
-    arr.push(`${a}-${b}`);
-  }
-  return arr;
-}
-
-// Given a score like "2-1" and series, return 'A' if A has higher wins, 'B' if B
-function winnerFromScore(score){
-  if(!score) return null;
-  const [a,b] = score.split('-').map(n=>parseInt(n,10));
-  if(isNaN(a) || isNaN(b)) return null;
-  return a > b ? 'A' : a < b ? 'B' : null;
-}
-
-  // === Team logos (add your uploaded files here) ===
-  // Key format: all-caps, no spaces/punctuation (e.g., "G2", "CFO", "KT", "SKT1","AL","FNC","MKOI","TES","100T","BLG","FLY","GENG","HLE","PSG","SW","VKS",)
-  const TEAM_LOGOS = {
-  G2:  "logos/G2.png",
-  CFO:  "logos/CFO.png",
-  KT:  "logos/KT.png",
-  SKT:  "logos/SKT.png",
-  AL:  "logos/AL.png",
-  FNC:  "logos/FNC.png",
-  MKOI:  "logos/MKOI.png",
-  TES:  "logos/TES.png",
-  "100T":  "logos/100T.png",
-  BLG:  "logos/BLG.png",
-  FLY:  "logos/FLY.png",
-  GENG:  "logos/GenG.png",
-  HLE:  "logos/HLE.png",
-  PSG:  "logos/PSG.png",
-  SW:  "logos/SW.png",
-  VKS:  "logos/VKS.png",
-  // add your other 4 here...
-  // SKT1 example: SKT1: "logos/skt1.png",
-  };
-
-  // Normalize a team name like "Gen.G" -> "GENG"
-  function teamKey(name){
-  return (name || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
-  }
-
-  // Make short initials for fallback badge, e.g., "G2", "GEN"
-  function teamInitials(name){
-  const key = teamKey(name);
-  // take first 3 letters/numbers (looks good in a tiny badge)
-  return key.slice(0, 3);
-  }
-
-  // Return <img> or a fallback badge for the team
-  function logoHTML(teamName, size /* 'sm' | 'lg' */){
-  const key = teamKey(teamName);
-  const url = TEAM_LOGOS[key];
-  if (url) {
-    return `<img class="logo-${size}" src="${url}" alt="${teamName} logo" loading="lazy">`;
-  }
-  // fallback badge with initials
-  const cls = size === 'lg' ? 'logo-badge lg' : 'logo-badge';
-  return `<span class="${cls}">${teamInitials(teamName)}</span>`;
-  }
-
-  // ======= Firebase SDK (modular) =======
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-  import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
-    authDomain: "lol-gummis.firebaseapp.com",
-    projectId: "lol-gummis",
-    storageBucket: "lol-gummis.firebasestorage.app",
-    messagingSenderId: "254929720511",
-    appId: "1:254929720511:web:ad684ca51476b0d870620a",
-    measurementId: "G-SME88855KH"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  // ======= Auth UI =======
-  const elSignin = document.getElementById('signin');
-  const elSignout = document.getElementById('signout');
-  const elUser = document.getElementById('user-info');
-  const adminPanel = document.getElementById('admin-panel');
-
-  elSignin.onclick = async () => { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); } };
-  elSignout.onclick = async () => { await signOut(auth); };
-
-  let currentUser = null;
-  function normalizeEmail(e){
-    e = (e||'').trim().toLowerCase();
-    const [local, domain] = e.split('@');
-    if(!local || !domain) return e;
-    if(domain === 'gmail.com' || domain === 'googlemail.com'){
-      const cleanLocal = local.split('+')[0].replace(/\./g,'');
-      return `${cleanLocal}@gmail.com`;
-    }
-    return `${local}@${domain}`;
-  }
-  const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
-  function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
-  function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
-  function updateAdminDebug(){ const el = document.getElementById('admin-debug'); if(!el) return; el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode'; }
-
-  onAuthStateChanged(auth, async (user) => {
-    currentUser = user;
-    if (user) {
-      elSignin.classList.add('hidden');
-      elSignout.classList.remove('hidden');
-      elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
-      await setDoc(doc(db, 'users', user.uid), { uid: user.uid, displayName: user.displayName ?? 'Anonymous', email: user.email ?? '', photoURL: user.photoURL ?? '', updatedAt: serverTimestamp() }, { merge: true });
-    } else {
-      elSignin.classList.remove('hidden');
-      elSignout.classList.add('hidden');
-      elUser.textContent = '';
-    }
-    renderAdmin();
-    updateAdminDebug();
-  });
-
-  // ======= Matches & Picks =======
-  const upcomingEl = document.getElementById('upcoming');
-  const pastEl = document.getElementById('past');
-  const addForm = document.getElementById('add-match');
-
-  const panelUpcoming = document.getElementById('panel-upcoming');
-  const panelPast = document.getElementById('panel-past');
-  const previewUpcomingEl = document.getElementById('preview-upcoming');
-  const previewPastEl = document.getElementById('preview-past');
-  const detailsUpcoming = document.getElementById('details-upcoming');
-  const detailsPast = document.getElementById('details-past');
-
-  let expanded = null; // 'upcoming' | 'past' | null
-function togglePanel(which){
-  // If the same panel is clicked again -> collapse both
-  if (expanded === which) {
-    expanded = null;
-    detailsUpcoming.classList.add('hidden');
-    detailsPast.classList.add('hidden');
-    panelUpcoming.setAttribute('aria-expanded', 'false');
-    panelPast.setAttribute('aria-expanded', 'false');
-    // Scroll back to the panels row for nice UX
-    document.querySelector('.panels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    return;
-  }
-
-  // Otherwise open the requested panel and close the other
-  expanded = which;
-  const isUp = which === 'upcoming';
-  detailsUpcoming.classList.toggle('hidden', !isUp);
-  detailsPast.classList.toggle('hidden', isUp);
-  panelUpcoming.setAttribute('aria-expanded', String(isUp));
-  panelPast.setAttribute('aria-expanded', String(!isUp));
-  const target = isUp ? detailsUpcoming : detailsPast;
-  target.scrollIntoView({ behavior:'smooth', block:'start' });
-}
-
-  panelUpcoming.addEventListener('click', ()=> togglePanel('upcoming'));
-  panelPast.addEventListener('click', ()=> togglePanel('past'));
-
-
- addForm?.addEventListener('submit', async (e)=>{
-  e.preventDefault();
-  const teamA = document.getElementById('teamA').value.trim();
-  const teamB = document.getElementById('teamB').value.trim();
-  const startLocal = document.getElementById('startTime').value;
-  const series = (document.getElementById('series')?.value || 'BO1').toUpperCase();
-  if(!teamA || !teamB || !startLocal) return;
-  const startTime = new Date(startLocal);
-  await addDoc(collection(db,'matches'), {
-    teamA, teamB,
-    series,                    // <-- NEW
-    startTime,
-    result: null,              // 'A'|'B' when decided
-    resultScore: null,         // e.g. "2-1" or "3-2" for Bo3/Bo5
-    createdAt: serverTimestamp()
-  });
-  e.target.reset();
-});
-
-
-  function fmtDate(d){ return new Date(d).toLocaleString(); }
-  function now(){ return new Date(); }
-  function locked(m){ if(!m.startTime) return false; const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime); return now() >= start; }
-
-  const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
-  onSnapshot(matchesQ, async (snap)=>{
-    const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
-    const [picksSnap, usersSnap] = await Promise.all([ getDocs(collection(db,'picks')), getDocs(collection(db,'users')) ]);
-    const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
-    const picksByMatch = new Map(); // matchId -> [{userId, pick, exactScore}]
-    picksSnap.forEach(p=>{
-    const data = p.data();
-    const list = picksByMatch.get(data.matchId) || [];
-    list.push({ userId: data.userId, pick: data.pick, exactScore: data.exactScore || null });
-    picksByMatch.set(data.matchId, list);
-    });
-
-    // Split upcoming and past
-    const future = matches.filter(m=>!locked(m));
-    const past = matches.filter(m=>locked(m)).reverse(); // most recent first
-
-    renderPreviews(future, past, picksByMatch);
-    renderMatches(future, past, picksByMatch, users);
-    updateScoreboard(matches, picksByMatch, users);
-  });
-
-  async function getUserPick(matchId, uid){ if(!uid) return null; const ref = doc(db, 'picks', `${uid}_${matchId}`); const d = await getDoc(ref); return d.exists() ? d.data() : null; }
-  async function savePick(match, pick){ if(!currentUser){ alert('Sign in to submit picks.'); return; } if(locked(match)) { alert('Match is locked.'); return; } const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`); await setDoc(ref, { userId: currentUser.uid, userName: currentUser.displayName ?? currentUser.email, matchId: match.id, pick, updatedAt: serverTimestamp() }, { merge:true }); }
-
-function picksListHTML(match, picks, users){
-  if (!picks || picks.length === 0) {
-    return '<div class="muted">No picks yet.</div>';
-  }
-
-  const res = match.result;            // 'A' | 'B' | null
-  const resScore = match.resultScore || null;
-
-  const teamName = (pick) => (pick === 'A' ? match.teamA : pick === 'B' ? match.teamB : '—');
-
-  const html = picks.map(p => {
-    const u = users.get(p.userId);
-    const name = u?.displayName || 'Unknown';
-
-    // Tag: pending / correct / exact / wrong
-    let tag = '<span class="tag pending">pending</span>';
-    if (res) {
-      const correctWinner = p.pick && (p.pick === res);
-      const exact = correctWinner && p.exactScore && resScore && (p.exactScore === resScore);
-      tag = exact
-        ? '<span class="tag good">exact</span>'
-        : (correctWinner ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>');
-    }
-
-    const picked = teamName(p.pick);
-    const exactTxt = p.exactScore ? ` ${p.exactScore}` : '';
-
-    return `<div class="entry">
-      <strong>${name}</strong>
-      <span class="muted"> picked </span>
-      <span class="team">${picked}${exactTxt}</span>
-      ${tag}
-    </div>`;
-  }).join('');
-
-  return `<div class="pickslist">${html}</div>`;
-}
-
-
-  function previewTile(match){
-  const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
-  const el = document.createElement('div');
-  el.className = 'preview-tile';
-
-  const left = logoHTML(match.teamA, 'sm');
-  const right = logoHTML(match.teamB, 'sm');
-
-  // Mark winner on past tiles by bolding the winner (kept minimal)
-  const winA = match.result === 'A' ? ' style="font-weight:800;"' : '';
-  const winB = match.result === 'B' ? ' style="font-weight:800;"' : '';
-
-  el.innerHTML = `
-    <div class="teams" title="${match.teamA} vs ${match.teamB} • ${fmtDate(startTime)}">
-      <span${winA}>${left}</span>
-      <span style="margin:0 6px;">:</span>
-      <span${winB}>${right}</span>
-    </div>
-  `;
-  return el;
-}
-
-
-  function matchCard(match, picksForMatch, isPast, users){
-  const container = document.createElement('div');
-  container.className = 'card';
-  const isLocked = locked(match);
-  const result = match.result;            // 'A'|'B'|null
-  const resultScore = match.resultScore;  // e.g., "2-1" | null
-  const series = (match.series || 'BO1').toUpperCase();
-  const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
-
-  // Initialize pending state for this match if needed
-  if(!pending.has(match.id)) pending.set(match.id, { pick:null, exactScore:null });
-
-  container.innerHTML = `
-    <div class="row">
-      <div>
-        <div>
-          <span>${logoHTML(match.teamA,'lg')}</span><span class="team">${match.teamA}</span>
-          <span style="margin:0 6px;">vs</span>
-          <span>${logoHTML(match.teamB,'lg')}</span><span class="team">${match.teamB}</span>
-          <span class="muted" style="margin-left:8px;">(${series})</span>
+      <!-- PANELS row -->
+      <div class="panels">
+        <div id="panel-upcoming" class="panel" role="button" aria-expanded="false">
+          <div class="panel-title">Upcoming matches</div>
+          <div class="preview-grid" id="preview-upcoming"></div>
         </div>
-        <div class="muted">Starts: ${fmtDate(startTime)}</div>
-        <div class="muted">Open until: ${fmtDate(startTime)}</div>
+        <div id="panel-past" class="panel" role="button" aria-expanded="false">
+          <div class="panel-title">Previous matches</div>
+          <div class="preview-grid" id="preview-past"></div>
+        </div>
       </div>
-      <div class="spacer"></div>
-      ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
+
+      <!-- Details (expand/collapse) -->
+      <div id="details-upcoming" class="panel-details hidden">
+        <div class="card"><h3>Upcoming Matches</h3><div id="upcoming" class="cards"></div></div>
+      </div>
+
+      <div id="details-past" class="panel-details hidden">
+        <div class="card">
+          <h3>Past Matches</h3>
+          <div id="past-matches"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Scoreboard</h3>
+        <table class="scoreboard" id="scoreboard">
+          <thead>
+            <tr><th style="width:40px;"></th><th>Player</th><th>Points</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="footer">Made for friends. Not affiliated with Riot Games.</div>
     </div>
 
-    <div class="row" style="margin-top:10px; gap:12px;">
-      <label class="pick"><input type="radio" name="pick-${match.id}" value="A" ${isPast?'disabled':''}> ${match.teamA}</label>
-      <label class="pick"><input type="radio" name="pick-${match.id}" value="B" ${isPast?'disabled':''}> ${match.teamB}</label>
-      ${series !== 'BO1' ? `
-      <div class="row" style="gap:6px; align-items:center;">
-        <span class="muted">Exact:</span>
-        <select id="score-${match.id}" ${isPast?'disabled':''} style="min-width:90px;"></select>
-      </div>` : ``}
-      <div class="spacer"></div>
-      ${result 
-        ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}${resultScore ? ' '+resultScore : ''}</span>`
-        : '<span class="muted">Result: TBD</span>'}
-    </div>
+    <script type="module">
+      // ======= CONFIG =======
+      const ADMIN_EMAILS = [
+        "pfeuferleon@gmail.com",
+        "Jakob.st74@gmail.com",
+        "Kbisselik@gmail.com",
+        "tehjooker@gmail.com"
+      ];
+      const POINTS_PER_CORRECT = 1; // change if you want later
+      document.getElementById('points-per-correct').textContent = POINTS_PER_CORRECT;
+      const POINTS_EXACT = 2; // total points if exact score matches
 
-    <div class="row" style="margin-top:8px; gap:8px;">
-      ${!isPast ? `<button id="save-${match.id}">Save changes</button>` : ``}
-      ${isAdmin() ? `
-        <select id="set-${match.id}">
-          <option value="">Set winner...</option>
-          <option value="A">${match.teamA}</option>
-          <option value="B">${match.teamB}</option>
-          <option value="clear">Clear result</option>
-        </select>
-        ${series !== 'BO1' ? `
-          <select id="setscore-${match.id}">
-            <option value="">Set score...</option>
-            ${series === 'BO3' ? `<option>2-0</option><option>2-1</option><option>1-2</option><option>0-2</option>` : ``}
-            ${series === 'BO5' ? `<option>3-0</option><option>3-1</option><option>3-2</option><option>2-3</option><option>1-3</option><option>0-3</option>` : ``}
-          </select>` : ``}
-        <button id="apply-${match.id}">Apply</button>
-      ` : ``}
-    </div>
+      // pending (unsaved) choices per match: { pick: 'A'|'B', exactScore: '2-1'|'3-2'|null }
+      const pending = new Map();
 
-    ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
-  `;
-
-  const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
-  const scoreSel = container.querySelector(`#score-${match.id}`);
-  const saveBtn  = container.querySelector(`#save-${match.id}`);
-
-  // Load existing pick into pending (preselect UI)
-  if(currentUser){
-    getUserPick(match.id, currentUser.uid).then(p=>{
-      // p may have { pick, exactScore }
-      if(p?.pick){
-        const r = container.querySelector(`input[value="${p.pick}"]`);
-        if(r) r.checked = true;
-        const s = pending.get(match.id) || {};
-        s.pick = p.pick;
-        s.exactScore = p.exactScore || null;
-        pending.set(match.id, s);
-        // populate scores after pick is known
-        if(scoreSel && series !== 'BO1'){
-          refreshScoreOptions(scoreSel, series, s.pick, s.exactScore);
+      function seriesMaxWins(series){
+        return series === 'BO5' ? 3 : series === 'BO3' ? 2 : 1;
+      }
+      function scoreOptionsFor(series, winner){
+        const max = seriesMaxWins(series);
+        if (max === 1 || !winner) return [];
+        const arr = [];
+        for(let loserWins = 0; loserWins < max; loserWins++){
+          const a = winner === 'A' ? max : loserWins;
+          const b = winner === 'B' ? max : loserWins;
+          arr.push(`${a}-${b}`);
         }
-      } else if(scoreSel && series !== 'BO1'){
-        refreshScoreOptions(scoreSel, series, null, null);
+        return arr;
       }
-    });
-  } else if(scoreSel && series !== 'BO1'){
-    refreshScoreOptions(scoreSel, series, null, null);
-  }
-
-  // When user changes winner, update pending + score options
-  radios.forEach(r=>{
-    r.addEventListener('change', ()=>{
-      const cur = pending.get(match.id) || {};
-      cur.pick = r.value;
-      // Reset exactScore when winner changes
-      cur.exactScore = null;
-      pending.set(match.id, cur);
-      if(scoreSel && series !== 'BO1'){
-        refreshScoreOptions(scoreSel, series, cur.pick, null);
+      function winnerFromScore(score){
+        if(!score) return null;
+        const [a,b] = score.split('-').map(n=>parseInt(n,10));
+        if(isNaN(a) || isNaN(b)) return null;
+        return a > b ? 'A' : a < b ? 'B' : null;
       }
-    });
-  });
 
-  // When user changes exact score
-  scoreSel?.addEventListener('change', ()=>{
-    const cur = pending.get(match.id) || {};
-    cur.exactScore = scoreSel.value || null;
-    pending.set(match.id, cur);
-    // If user picks a score that implies winner, ensure pick matches it
-    const implied = winnerFromScore(cur.exactScore);
-    if(implied && cur.pick && implied !== cur.pick){
-      // keep the explicit pick as source of truth; re-sync options
-      refreshScoreOptions(scoreSel, series, cur.pick, cur.exactScore);
-    }
-  });
-
-  // Save changes button
-  saveBtn?.addEventListener('click', async ()=>{
-    if(!currentUser){ alert('Sign in to submit picks.'); return; }
-    if(locked(match)) { alert('Match is locked.'); return; }
-    const cur = pending.get(match.id) || {};
-    if(!cur.pick){ alert('Please choose a winner first.'); return; }
-    // For Bo3/Bo5, exactScore is optional; if provided, it must align with pick
-    if(series !== 'BO1' && cur.exactScore){
-      const implied = winnerFromScore(cur.exactScore);
-      if(!implied){ alert('Invalid exact score.'); return; }
-      if(implied !== cur.pick){
-        alert('Exact score does not match your selected winner. Please adjust.');
-        return;
+      // === Team logos (add your uploaded files here) ===
+      const TEAM_LOGOS = {
+        G2: "logos/G2.png",
+        CFO: "logos/CFO.png",
+        KT: "logos/KT.png",
+        SKT: "logos/SKT.png",
+        AL: "logos/AL.png",
+        FNC: "logos/FNC.png",
+        MKOI: "logos/MKOI.png",
+        TES: "logos/TES.png",
+        "100T": "logos/100T.png",
+        BLG: "logos/BLG.png",
+        FLY: "logos/FLY.png",
+        GENG: "logos/GenG.png",
+        HLE: "logos/HLE.png",
+        PSG: "logos/PSG.png",
+        SW: "logos/SW.png",
+        VKS: "logos/VKS.png",
+      };
+      function teamKey(name){
+        return (name || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
       }
-    }
-    await savePickWithScore(match, cur.pick, series === 'BO1' ? null : (cur.exactScore || null));
-    alert('Saved ✅');
-  });
-
-  // Admin apply button
-  if(isAdmin()){
-    const selWinner = container.querySelector(`#set-${match.id}`);
-    const selScore  = container.querySelector(`#setscore-${match.id}`);
-    const btnApply  = container.querySelector(`#apply-${match.id}`);
-    btnApply?.addEventListener('click', async ()=>{
-      if(selWinner?.value === 'clear'){
-        await updateDoc(doc(db,'matches',match.id), { result: null, resultScore: null });
-        return;
+      function teamInitials(name){
+        const key = teamKey(name);
+        return key.slice(0, 3);
       }
-      // If a score is set, derive winner from it
-      if(selScore && selScore.value){
-        const w = winnerFromScore(selScore.value);
-        if(!w){ alert('Invalid score.'); return; }
-        await updateDoc(doc(db,'matches',match.id), { result: w, resultScore: selScore.value });
-      } else if(selWinner && (selWinner.value === 'A' || selWinner.value === 'B')){
-        // Winner only (e.g., BO1)
-        await updateDoc(doc(db,'matches',match.id), { result: selWinner.value, resultScore: null });
+      function logoHTML(teamName, size /* 'sm' | 'lg' */){
+        const key = teamKey(teamName);
+        const url = TEAM_LOGOS[key];
+        if (url) return `<img class="logo-${size}" src="${url}" alt="${teamName} logo" loading="lazy">`;
+        const cls = size === 'lg' ? 'logo-badge lg' : 'logo-badge';
+        return `<span class="${cls}">${teamInitials(teamName)}</span>`;
       }
-    });
-  }
+      function teamLogoUrl(teamName){
+        return TEAM_LOGOS[teamKey(teamName)] || "";
+      }
 
-  return container;
-}
+      // ======= Firebase SDK (modular) =======
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+      import { getFirestore, collection, doc, addDoc, setDoc, getDoc, getDocs, onSnapshot, updateDoc, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-// Helper to populate the exact score select based on series & winner
-function refreshScoreOptions(selectEl, series, winner, selected){
-  const opts = scoreOptionsFor(series, winner);
-  selectEl.innerHTML = `<option value="">—</option>` + opts.map(s=>`<option value="${s}">${s}</option>`).join('');
-  if(selected && opts.includes(selected)) selectEl.value = selected;
-}
+      const firebaseConfig = {
+        apiKey: "AIzaSyBL8V_E4Tpe2g9uhRrGJQuk6J3JaEP6ezw",
+        authDomain: "lol-gummis.firebaseapp.com",
+        projectId: "lol-gummis",
+        storageBucket: "lol-gummis.firebasestorage.app",
+        messagingSenderId: "254929720511",
+        appId: "1:254929720511:web:ad684ca51476b0d870620a",
+        measurementId: "G-SME88855KH"
+      };
 
-// Write pick + optional exact score
-async function savePickWithScore(match, pick, exactScore){
-  const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
-  await setDoc(ref, {
-    userId: currentUser.uid,
-    userName: currentUser.displayName ?? currentUser.email,
-    matchId: match.id,
-    pick,
-    exactScore: exactScore || null,
-    updatedAt: serverTimestamp()
-  }, { merge:true });
-}
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
 
+      // ======= Auth UI =======
+      const elSignin = document.getElementById('signin');
+      const elSignout = document.getElementById('signout');
+      const elUser = document.getElementById('user-info');
+      const adminPanel = document.getElementById('admin-panel');
 
-  function renderPreviews(future, past, picksByMatch){
-    previewUpcomingEl.innerHTML = '';
-    previewPastEl.innerHTML = '';
-    const up6 = future.slice(0,6);
-    const past6 = past.slice(0,6);
-    if(up6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No upcoming yet'; previewUpcomingEl.appendChild(d); }
-    else up6.forEach(m=> previewUpcomingEl.appendChild(previewTile(m)) );
-    if(past6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No previous yet'; previewPastEl.appendChild(d); }
-    else past6.forEach(m=> previewPastEl.appendChild(previewTile(m)) );
-  }
+      elSignin.onclick = async () => { try { await signInWithPopup(auth, new GoogleAuthProvider()); } catch(e){ alert(e.message); } };
+      elSignout.onclick = async () => { await signOut(auth); };
 
+      let currentUser = null;
+      function normalizeEmail(e){
+        e = (e||'').trim().toLowerCase();
+        const [local, domain] = e.split('@');
+        if(!local || !domain) return e;
+        if(domain === 'gmail.com' || domain === 'googlemail.com'){
+          const cleanLocal = local.split('+')[0].replace(/\./g,'');
+          return `${cleanLocal}@gmail.com`;
+        }
+        return `${local}@${domain}`;
+      }
+      const ADMIN_EMAILS_NORM = ADMIN_EMAILS.map(normalizeEmail);
+      function isAdmin(){ return currentUser && ADMIN_EMAILS_NORM.includes(normalizeEmail(currentUser.email)); }
+      function renderAdmin(){ adminPanel.classList.toggle('hidden', !isAdmin()); }
+      function updateAdminDebug(){ const el = document.getElementById('admin-debug'); if(!el) return; el.textContent = isAdmin() ? '🟢 Admin Mode' : '⚪ User Mode'; }
 
-  function renderPastMatchCard(match, picks, usersById, isAdmin, assets) {
-  // assets: { teamLogoUrl: (teamId) => string }
-  const t1 = match.team1;
-  const t2 = match.team2;
-  const logo1 = assets.teamLogoUrl(t1);
-  const logo2 = assets.teamLogoUrl(t2);
+      onAuthStateChanged(auth, async (user) => {
+        currentUser = user;
+        if (user) {
+          elSignin.classList.add('hidden');
+          elSignout.classList.remove('hidden');
+          elUser.textContent = `Signed in as ${user.displayName ?? user.email}`;
+          await setDoc(doc(db, 'users', user.uid), { uid: user.uid, displayName: user.displayName ?? 'Anonymous', email: user.email ?? '', photoURL: user.photoURL ?? '', updatedAt: serverTimestamp() }, { merge: true });
+        } else {
+          elSignin.classList.remove('hidden');
+          elSignout.classList.add('hidden');
+          elUser.textContent = '';
+        }
+        renderAdmin();
+        updateAdminDebug();
+      });
 
-  const hasResult = !!match.result;
-  const resultScore = match.resultScore || "";
-  const centerScore = hasResult ? formatScoreColon(resultScore) : "– : –";
+      // ======= Matches & Picks =======
+      const upcomingEl = document.getElementById('upcoming');
+      const addForm = document.getElementById('add-match');
 
-  // --- HEADER with big logos + big result in the middle ---
-  const header = document.createElement("div");
-  header.className = "past-header";
-  header.innerHTML = `
-    <div class="team left">
-      <img class="logo" alt="${t1} logo" src="${logo1}">
-    </div>
-    <div class="result-badge">${centerScore}</div>
-    <div class="team right">
-      <img class="logo" alt="${t2} logo" src="${logo2}">
-    </div>
-  `;
+      const panelUpcoming = document.getElementById('panel-upcoming');
+      const panelPast = document.getElementById('panel-past');
+      const previewUpcomingEl = document.getElementById('preview-upcoming');
+      const previewPastEl = document.getElementById('preview-past');
+      const detailsUpcoming = document.getElementById('details-upcoming');
+      const detailsPast = document.getElementById('details-past');
 
-  // --- ADMIN CONTROLS (still visible for admins) ---
-  const admin = document.createElement("div");
-  admin.className = "past-admin";
-  if (isAdmin) {
-    admin.innerHTML = `
-      <button class="btn" data-action="setWinner" data-id="${match.id}">Set winner</button>
-      <button class="btn" data-action="setScore" data-id="${match.id}">Set score</button>
-      <button class="btn primary" data-action="applyResult" data-id="${match.id}">Apply</button>
-    `;
-  }
+      let expanded = null; // 'upcoming' | 'past' | null
+      function togglePanel(which){
+        if (expanded === which) {
+          expanded = null;
+          detailsUpcoming.classList.add('hidden');
+          detailsPast.classList.add('hidden');
+          panelUpcoming.setAttribute('aria-expanded', 'false');
+          panelPast.setAttribute('aria-expanded', 'false');
+          document.querySelector('.panels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          return;
+        }
+        expanded = which;
+        const isUp = which === 'upcoming';
+        detailsUpcoming.classList.toggle('hidden', !isUp);
+        detailsPast.classList.toggle('hidden', isUp);
+        panelUpcoming.setAttribute('aria-expanded', String(isUp));
+        panelPast.setAttribute('aria-expanded', String(!isUp));
+        const target = isUp ? detailsUpcoming : detailsPast;
+        target.scrollIntoView({ behavior:'smooth', block:'start' });
+      }
+      panelUpcoming.addEventListener('click', ()=> togglePanel('upcoming'));
+      panelPast.addEventListener('click', ()=> togglePanel('past'));
 
-  // wire up to your existing click handlers (they already exist in your script)
-  admin.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-action]");
-    if (!btn) return;
-    const id = btn.getAttribute("data-id");
-    const action = btn.getAttribute("data-action");
-    // These should already be in your code; if they’re named slightly
-    // differently, map them here.
-    if (action === "setWinner" && window.handleSetWinner) window.handleSetWinner(id);
-    if (action === "setScore"  && window.handleSetScore)  window.handleSetScore(id);
-    if (action === "applyResult" && window.handleApplyResult) window.handleApplyResult(id);
-  });
+      addForm?.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        const teamA = document.getElementById('teamA').value.trim();
+        const teamB = document.getElementById('teamB').value.trim();
+        const startLocal = document.getElementById('startTime').value;
+        const series = (document.getElementById('series')?.value || 'BO1').toUpperCase();
+        if(!teamA || !teamB || !startLocal) return;
+        const startTime = new Date(startLocal);
+        await addDoc(collection(db,'matches'), {
+          teamA, teamB,
+          series,
+          startTime,
+          result: null,
+          resultScore: null,
+          createdAt: serverTimestamp()
+        });
+        e.target.reset();
+      });
 
-  // --- PICKS LIST (name • team logo • score • colored square) ---
-  const picksWrap = document.createElement("div");
-  picksWrap.className = "picks";
+      function fmtDate(d){ return new Date(d).toLocaleString(); }
+      function now(){ return new Date(); }
+      function locked(m){ if(!m.startTime) return false; const start = m.startTime?.toDate ? m.startTime.toDate() : new Date(m.startTime); return now() >= start; }
 
-  (picks || []).forEach(p => {
-    const user = usersById.get(p.userId);
-    const pickLogo = assets.teamLogoUrl(p.pick);
-    const state = classifyBet(p.pick, p.exactScore, match.result, match.resultScore); // "exact" | "correct" | "wrong" | null
-    const dotCls = state ? state : "wrong"; // if null (no result yet) we can default or hide
+      const matchesQ = query(collection(db,'matches'), orderBy('startTime','asc'));
+      onSnapshot(matchesQ, async (snap)=>{
+        const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
+        const [picksSnap, usersSnap] = await Promise.all([ getDocs(collection(db,'picks')), getDocs(collection(db,'users')) ]);
+        const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
+        const picksByMatch = new Map(); // matchId -> [{userId, pick, exactScore}]
+        picksSnap.forEach(p=>{
+          const data = p.data();
+          const list = picksByMatch.get(data.matchId) || [];
+          list.push({ userId: data.userId, pick: data.pick, exactScore: data.exactScore || null });
+          picksByMatch.set(data.matchId, list);
+        });
 
-    const row = document.createElement("div");
-    row.className = "pick-row";
-    row.style.display = "contents"; // so grid items align to the parent grid
+        // Split upcoming and past
+        const future = matches.filter(m=>!locked(m));
+        const past = matches.filter(m=>locked(m)).reverse(); // most recent first
 
-    const userCell = document.createElement("div");
-    userCell.className = "user";
-    userCell.textContent = user?.name || "Unknown";
+        renderPreviews(future, past, picksByMatch);
+        renderMatches(future, past, picksByMatch, users);
+        updateScoreboard(matches, picksByMatch, users);
+      });
 
-    const logoCell = document.createElement("div");
-    logoCell.innerHTML = `<img class="pick-logo" alt="${p.pick} logo" src="${pickLogo}">`;
+      async function getUserPick(matchId, uid){ if(!uid) return null; const ref = doc(db, 'picks', `${uid}_${matchId}`); const d = await getDoc(ref); return d.exists() ? d.data() : null; }
+      async function savePick(match, pick){ if(!currentUser){ alert('Sign in to submit picks.'); return; } if(locked(match)) { alert('Match is locked.'); return; } const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`); await setDoc(ref, { userId: currentUser.uid, userName: currentUser.displayName ?? currentUser.email, matchId: match.id, pick, updatedAt: serverTimestamp() }, { merge:true }); }
 
-    const scoreCell = document.createElement("div");
-    scoreCell.className = "pick-score";
-    scoreCell.textContent = formatScoreColon(p.exactScore || "");
+      function picksListHTML(match, picks, users){
+        if (!picks || picks.length === 0) {
+          return '<div class="muted">No picks yet.</div>';
+        }
+        const res = match.result;
+        const resScore = match.resultScore || null;
+        const teamName = (pick) => (pick === 'A' ? match.teamA : pick === 'B' ? match.teamB : '—');
+        const html = picks.map(p => {
+          const u = users.get(p.userId);
+          const name = u?.displayName || 'Unknown';
+          let tag = '<span class="tag pending">pending</span>';
+          if (res) {
+            const correctWinner = p.pick && (p.pick === res);
+            const exact = correctWinner && p.exactScore && resScore && (p.exactScore === resScore);
+            tag = exact
+              ? '<span class="tag good">exact</span>'
+              : (correctWinner ? '<span class="tag good">correct</span>' : '<span class="tag bad">wrong</span>');
+          }
+          const picked = teamName(p.pick);
+          const exactTxt = p.exactScore ? ` ${p.exactScore}` : '';
+          return `<div class="entry">
+            <strong>${name}</strong>
+            <span class="muted"> picked </span>
+            <span class="team">${picked}${exactTxt}</span>
+            ${tag}
+          </div>`;
+        }).join('');
+        return `<div class="pickslist">${html}</div>`;
+      }
 
-    const dotCell = document.createElement("div");
-    dotCell.innerHTML = `<span class="result-dot ${dotCls}"></span>`;
+      function previewTile(match){
+        const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
+        const el = document.createElement('div');
+        el.className = 'preview-tile';
+        const left = logoHTML(match.teamA, 'sm');
+        const right = logoHTML(match.teamB, 'sm');
+        const winA = match.result === 'A' ? ' style="font-weight:800;"' : '';
+        const winB = match.result === 'B' ? ' style="font-weight:800;"' : '';
+        el.innerHTML = `
+          <div class="teams" title="${match.teamA} vs ${match.teamB} • ${fmtDate(startTime)}">
+            <span${winA}>${left}</span>
+            <span style="margin:0 6px;">:</span>
+            <span${winB}>${right}</span>
+          </div>
+        `;
+        return el;
+      }
 
-    picksWrap.appendChild(userCell);
-    picksWrap.appendChild(logoCell);
-    picksWrap.appendChild(scoreCell);
-    picksWrap.appendChild(dotCell);
-  });
+      function matchCard(match, picksForMatch, isPast, users){
+        const container = document.createElement('div');
+        container.className = 'card';
+        const isLocked = locked(match);
+        const result = match.result;
+        const resultScore = match.resultScore;
+        const series = (match.series || 'BO1').toUpperCase();
+        const startTime = match.startTime?.toDate ? match.startTime.toDate() : new Date(match.startTime);
 
-  // --- Assemble card ---
-  const card = document.createElement("div");
-  card.className = "past-card";
-  card.appendChild(header);
-  if (isAdmin) card.appendChild(admin);
-  card.appendChild(picksWrap);
-  return card;
-}
+        if(!pending.has(match.id)) pending.set(match.id, { pick:null, exactScore:null });
 
-  
-  function renderMatches(future, past, picksByMatch, users){
-    upcomingEl.innerHTML = '';
-    pastEl.innerHTML = '';
-    future.forEach(m=>{ const card = matchCard(m, picksByMatch.get(m.id)||[], false, users); upcomingEl.appendChild(card); });
-   // --- Custom rendering for past matches (side-by-side layout) ---
-const pastGrid = document.createElement('div');
-pastGrid.className = 'past-grid';
-past.forEach(match => {
-  const picks = picksByMatch.get(match.id) || [];
-  const result = match.result;
-  const resultScore = match.resultScore;
+        container.innerHTML = `
+          <div class="row">
+            <div>
+              <div>
+                <span>${logoHTML(match.teamA,'lg')}</span><span class="team">${match.teamA}</span>
+                <span style="margin:0 6px;">vs</span>
+                <span>${logoHTML(match.teamB,'lg')}</span><span class="team">${match.teamB}</span>
+                <span class="muted" style="margin-left:8px;">(${series})</span>
+              </div>
+              <div class="muted">Starts: ${fmtDate(startTime)}</div>
+              <div class="muted">Open until: ${fmtDate(startTime)}</div>
+            </div>
+            <div class="spacer"></div>
+            ${isLocked ? `<span class="pill lock">Locked</span>` : `<span class="pill">Open</span>`}
+          </div>
 
-  // Create card container
-  const card = document.createElement('div');
-  card.className = 'past-card';
+          <div class="row" style="margin-top:10px; gap:12px;">
+            <label class="pick"><input type="radio" name="pick-${match.id}" value="A" ${isPast?'disabled':''}> ${match.teamA}</label>
+            <label class="pick"><input type="radio" name="pick-${match.id}" value="B" ${isPast?'disabled':''}> ${match.teamB}</label>
+            ${series !== 'BO1' ? `
+            <div class="row" style="gap:6px; align-items:center;">
+              <span class="muted">Exact:</span>
+              <select id="score-${match.id}" ${isPast?'disabled':''} style="min-width:90px;"></select>
+            </div>` : ``}
+            <div class="spacer"></div>
+            ${result 
+              ? `<span class="pill ${result==='A'?'good':'bad'}">Result: ${result==='A'?match.teamA:match.teamB}${resultScore ? ' '+resultScore : ''}</span>`
+              : '<span class="muted">Result: TBD</span>'}
+          </div>
 
-  // Header (big logos)
-  card.innerHTML = `
-    <div class="past-card-header">
-      <img class="team-logo" src="${TEAM_LOGOS[teamKey(match.teamA)] || ''}" alt="${match.teamA}">
-      <div class="vs">vs</div>
-      <img class="team-logo" src="${TEAM_LOGOS[teamKey(match.teamB)] || ''}" alt="${match.teamB}">
-    </div>
-    <table class="bet-table">
-      <tbody>
-        ${picks.map(p => {
-          const user = users.get(p.userId);
-          const name = user?.displayName || 'Unknown';
-          const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB;
-          const logo = TEAM_LOGOS[teamKey(pickedTeam)] || '';
-          const outcome = classifyBet(p.pick, p.exactScore, result, resultScore);
-          return `
-            <tr>
-              <td style="font-weight:600;">${name}</td>
-              <td><img class="bet-team-logo" src="${logo}" alt="${pickedTeam}"></td>
-              <td>${p.exactScore || ''}</td>
-              <td><span class="bet-square ${outcome || ''}"></span></td>
-            </tr>`;
-        }).join('')}
-      </tbody>
-    </table>
-  `;
-  pastGrid.appendChild(card);
-});
-pastEl.innerHTML = '';
-pastEl.appendChild(pastGrid);
+          <div class="row" style="margin-top:8px; gap:8px;">
+            ${!isPast ? `<button id="save-${match.id}">Save changes</button>` : ``}
+            ${isAdmin() ? `
+              <select id="set-${match.id}">
+                <option value="">Set winner...</option>
+                <option value="A">${match.teamA}</option>
+                <option value="B">${match.teamB}</option>
+                <option value="clear">Clear result</option>
+              </select>
+              ${series !== 'BO1' ? `
+                <select id="setscore-${match.id}">
+                  <option value="">Set score...</option>
+                  ${series === 'BO3' ? `<option>2-0</option><option>2-1</option><option>1-2</option><option>0-2</option>` : ``}
+                  ${series === 'BO5' ? `<option>3-0</option><option>3-1</option><option>3-2</option><option>2-3</option><option>1-3</option><option>0-3</option>` : ``}
+                </select>` : ``}
+              <button id="apply-${match.id}">Apply</button>
+            ` : ``}
+          </div>
 
-    if(!upcomingEl.hasChildNodes()) upcomingEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No upcoming matches yet.</div>';
-    if(!pastEl.hasChildNodes()) pastEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No past matches yet.</div>';
-  }
+          ${isPast ? picksListHTML(match, picksForMatch, users) : ''}
+        `;
 
-  // ======= Scoreboard =======
-  const scoreboardBody = document.querySelector('#scoreboard tbody');
-  
-  // ======= Helper: classify each bet for result coloring =======
-function classifyBet(pick, exactScore, result, resultScore) {
-  if (!result) return null;
-  if (pick === result && exactScore && resultScore && exactScore === resultScore) return "exact";
-  if (pick === result) return "correct";
-  return "wrong";
-}
-  
-// Show scores with a colon (e.g., "2-1" => "2:1")
-function formatScoreColon(score) {
-  if (!score) return "";
-  const s = typeof score === "string" ? score.trim() : String(score);
-  return s.replace(/\s*/g, "").replace("-", ":");
-}
+        const radios = container.querySelectorAll(`input[name="pick-${match.id}"]`);
+        const scoreSel = container.querySelector(`#score-${match.id}`);
+        const saveBtn  = container.querySelector(`#save-${match.id}`);
 
-  function updateScoreboard(matches, picksByMatch, users){
-  // Build quick lookup for match results
-  const results = new Map(
-    matches.filter(m => m.result).map(m => [m.id, { winner: m.result, score: m.resultScore || null }])
-  );
+        if(currentUser){
+          getUserPick(match.id, currentUser.uid).then(p=>{
+            if(p?.pick){
+              const r = container.querySelector(`input[value="${p.pick}"]`);
+              if(r) r.checked = true;
+              const s = pending.get(match.id) || {};
+              s.pick = p.pick;
+              s.exactScore = p.exactScore || null;
+              pending.set(match.id, s);
+              if(scoreSel && series !== 'BO1'){
+                refreshScoreOptions(scoreSel, series, s.pick, s.exactScore);
+              }
+            } else if(scoreSel && series !== 'BO1'){
+              refreshScoreOptions(scoreSel, series, null, null);
+            }
+          });
+        } else if(scoreSel && series !== 'BO1'){
+          refreshScoreOptions(scoreSel, series, null, null);
+        }
 
-  const totals = new Map(); // uid -> { points }
+        radios.forEach(r=>{
+          r.addEventListener('change', ()=>{
+            const cur = pending.get(match.id) || {};
+            cur.pick = r.value;
+            cur.exactScore = null;
+            pending.set(match.id, cur);
+            if(scoreSel && series !== 'BO1'){
+              refreshScoreOptions(scoreSel, series, cur.pick, null);
+            }
+          });
+        });
 
-  picksByMatch.forEach((picks, matchId) => {
-    const res = results.get(matchId);
-    if (!res) return; // only count matches with results
+        scoreSel?.addEventListener('change', ()=>{
+          const cur = pending.get(match.id) || {};
+          cur.exactScore = scoreSel.value || null;
+          pending.set(match.id, cur);
+          const implied = winnerFromScore(cur.exactScore);
+          if(implied && cur.pick && implied !== cur.pick){
+            refreshScoreOptions(scoreSel, series, cur.pick, cur.exactScore);
+          }
+        });
 
-    picks.forEach(p => {
-      const cur = totals.get(p.userId) || { points: 0 };
-      const correctWinner = p.pick && (p.pick === res.winner);
-      const exact = correctWinner && p.exactScore && res.score && (p.exactScore === res.score);
+        saveBtn?.addEventListener('click', async ()=>{
+          if(!currentUser){ alert('Sign in to submit picks.'); return; }
+          if(locked(match)) { alert('Match is locked.'); return; }
+          const cur = pending.get(match.id) || {};
+          if(!cur.pick){ alert('Please choose a winner first.'); return; }
+          if(series !== 'BO1' && cur.exactScore){
+            const implied = winnerFromScore(cur.exactScore);
+            if(!implied){ alert('Invalid exact score.'); return; }
+            if(implied !== cur.pick){
+              alert('Exact score does not match your selected winner. Please adjust.');
+              return;
+            }
+          }
+          await savePickWithScore(match, cur.pick, series === 'BO1' ? null : (cur.exactScore || null));
+          alert('Saved ✅');
+        });
 
-      cur.points += exact ? POINTS_EXACT : (correctWinner ? POINTS_PER_CORRECT : 0);
-      totals.set(p.userId, cur);
-    });
-  });
+        if(isAdmin()){
+          const selWinner = container.querySelector(`#set-${match.id}`);
+          const selScore  = container.querySelector(`#setscore-${match.id}`);
+          const btnApply  = container.querySelector(`#apply-${match.id}`);
+          btnApply?.addEventListener('click', async ()=>{
+            if(selWinner?.value === 'clear'){
+              await updateDoc(doc(db,'matches',match.id), { result: null, resultScore: null });
+              return;
+            }
+            if(selScore && selScore.value){
+              const w = winnerFromScore(selScore.value);
+              if(!w){ alert('Invalid score.'); return; }
+              await updateDoc(doc(db,'matches',match.id), { result: w, resultScore: selScore.value });
+            } else if(selWinner && (selWinner.value === 'A' || selWinner.value === 'B')){
+              await updateDoc(doc(db,'matches',match.id), { result: selWinner.value, resultScore: null });
+            }
+          });
+        }
 
-  const rows = Array.from(users.keys()).map(uid => {
-    const name = users.get(uid)?.displayName || 'Unknown';
-    const points = totals.get(uid)?.points ?? 0;
-    return { name, points };
-  }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
+        return container;
+      }
 
-  scoreboardBody.innerHTML = rows.map((r,i)=>{
-    const rank = i + 1;
-    const trClass = rank <= 3 ? `tr-rank-${rank}` : '';
-    return `<tr class="${trClass}">
-      <td><span class="rank-badge">${rank}.</span></td>
-      <td>${r.name}</td>
-      <td>${r.points}</td>
-    </tr>`;
-  }).join('');
-}
+      function refreshScoreOptions(selectEl, series, winner, selected){
+        const opts = scoreOptionsFor(series, winner);
+        selectEl.innerHTML = `<option value="">—</option>` + opts.map(s=>`<option value="${s}">${s}</option>`).join('');
+        if(selected && opts.includes(selected)) selectEl.value = selected;
+      }
+      async function savePickWithScore(match, pick, exactScore){
+        const ref = doc(db, 'picks', `${currentUser.uid}_${match.id}`);
+        await setDoc(ref, {
+          userId: currentUser.uid,
+          userName: currentUser.displayName ?? currentUser.email,
+          matchId: match.id,
+          pick,
+          exactScore: exactScore || null,
+          updatedAt: serverTimestamp()
+        }, { merge:true });
+      }
 
+      function renderPreviews(future, past, picksByMatch){
+        previewUpcomingEl.innerHTML = '';
+        previewPastEl.innerHTML = '';
+        const up6 = future.slice(0,6);
+        const past6 = past.slice(0,6);
+        if(up6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No upcoming yet'; previewUpcomingEl.appendChild(d); }
+        else up6.forEach(m=> previewUpcomingEl.appendChild(previewTile(m)) );
+        if(past6.length===0){ const d=document.createElement('div'); d.className='preview-empty'; d.textContent='No previous yet'; previewPastEl.appendChild(d); }
+        else past6.forEach(m=> previewPastEl.appendChild(previewTile(m)) );
+      }
 
-</script>
-```
+      // ======= Helper: classify each bet for result coloring =======
+      function classifyBet(pick, exactScore, result, resultScore) {
+        if (!result) return null;
+        if (pick === result && exactScore && resultScore && exactScore === resultScore) return "exact";
+        if (pick === result) return "correct";
+        return "wrong";
+      }
+      // Show scores with a colon (e.g., "2-1" => "2:1")
+      function formatScoreColon(score) {
+        if (!score) return "";
+        const s = typeof score === "string" ? score.trim() : String(score);
+        return s.replace(/\s*/g, "").replace("-", ":");
+      }
 
+      // ======= Past grid renderer (glow, logos, big center result) =======
+      function renderPastGrid(past, picksByMatch, users){
+        const wrap = document.getElementById('past-matches');
+        if(!wrap) return;
+        wrap.innerHTML = '';
+
+        const grid = document.createElement('div');
+        grid.className = 'past-grid';
+
+        past.forEach(m=>{
+          const picks = picksByMatch.get(m.id) || [];
+          const card = document.createElement('div');
+          card.className = 'past-card';
+
+          const hasResult = !!m.result;
+          const centerScore = hasResult ? formatScoreColon(m.resultScore || '') : '– : –';
+
+          const header = document.createElement('div');
+          header.className = 'past-header';
+          header.innerHTML = `
+            <div class="team left">
+              <img class="logo" alt="${m.teamA} logo" src="${teamLogoUrl(m.teamA)}">
+            </div>
+            <div class="result-badge">${centerScore}</div>
+            <div class="team right">
+              <img class="logo" alt="${m.teamB} logo" src="${teamLogoUrl(m.teamB)}">
+            </div>
+          `;
+          card.appendChild(header);
+
+          if(isAdmin()){
+            const series = (m.series || 'BO1').toUpperCase();
+            const admin = document.createElement('div');
+            admin.className = 'past-admin';
+
+            const selWinner = document.createElement('select');
+            selWinner.id = `set-${m.id}`;
+            selWinner.innerHTML = `
+              <option value="">Set winner…</option>
+              <option value="A">${m.teamA}</option>
+              <option value="B">${m.teamB}</option>
+              <option value="clear">Clear result</option>
+            `;
+
+            let selScore = null;
+            if(series !== 'BO1'){
+              selScore = document.createElement('select');
+              selScore.id = `setscore-${m.id}`;
+              selScore.innerHTML = `<option value="">Set score…</option>` +
+                (series === 'BO3'
+                  ? `<option>2-0</option><option>2-1</option><option>1-2</option><option>0-2</option>`
+                  : `<option>3-0</option><option>3-1</option><option>3-2</option><option>2-3</option><option>1-3</option><option>0-3</option>`);
+            }
+
+            const btnApply = document.createElement('button');
+            btnApply.className = 'btn primary';
+            btnApply.textContent = 'Apply';
+            btnApply.addEventListener('click', async ()=>{
+              if(selWinner.value === 'clear'){
+                await updateDoc(doc(db,'matches',m.id), { result: null, resultScore: null });
+                return;
+              }
+              if(selScore && selScore.value){
+                const w = winnerFromScore(selScore.value);
+                if(!w){ alert('Invalid score'); return; }
+                await updateDoc(doc(db,'matches',m.id), { result: w, resultScore: selScore.value });
+              } else if(selWinner.value === 'A' || selWinner.value === 'B'){
+                await updateDoc(doc(db,'matches',m.id), { result: selWinner.value, resultScore: null });
+              } else {
+                alert('Choose a winner or a score.');
+              }
+            });
+
+            admin.appendChild(selWinner);
+            if(selScore) admin.appendChild(selScore);
+            admin.appendChild(btnApply);
+            card.appendChild(admin);
+          }
+
+          const picksWrap = document.createElement('div');
+          picksWrap.className = 'picks';
+
+          picks.forEach(p=>{
+            const u = users.get(p.userId);
+            const name = u?.displayName || 'Unknown';
+            const pickedTeamName = p.pick === 'A' ? m.teamA : m.teamB;
+            const pickedLogo = teamLogoUrl(pickedTeamName);
+            const state = classifyBet(p.pick, p.exactScore, m.result, m.resultScore); // "exact" | "correct" | "wrong" | null
+            const dotCls = state ? state : 'wrong';
+
+            const userCell = document.createElement('div');
+            userCell.className = 'user';
+            userCell.textContent = name;
+
+            const logoCell = document.createElement('div');
+            logoCell.innerHTML = `<img class="pick-logo" alt="${pickedTeamName} logo" src="${pickedLogo}">`;
+
+            const scoreCell = document.createElement('div');
+            scoreCell.className = 'pick-score';
+            scoreCell.textContent = formatScoreColon(p.exactScore || '');
+
+            const dotCell = document.createElement('div');
+            dotCell.innerHTML = `<span class="result-dot ${dotCls}"></span>`;
+
+            picksWrap.appendChild(userCell);
+            picksWrap.appendChild(logoCell);
+            picksWrap.appendChild(scoreCell);
+            picksWrap.appendChild(dotCell);
+          });
+
+          card.appendChild(picksWrap);
+          grid.appendChild(card);
+        });
+
+        wrap.appendChild(grid);
+      }
+
+      function renderMatches(future, past, picksByMatch, users){
+        // Upcoming
+        upcomingEl.innerHTML = '';
+        future.forEach(m=>{
+          const card = matchCard(m, picksByMatch.get(m.id)||[], false, users);
+          upcomingEl.appendChild(card);
+        });
+        if(!upcomingEl.hasChildNodes()){
+          upcomingEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No upcoming matches yet.</div>';
+        }
+
+        // Past (new grid into #past-matches)
+        renderPastGrid(past, picksByMatch, users);
+      }
+
+      // ======= Scoreboard =======
+      const scoreboardBody = document.querySelector('#scoreboard tbody');
+
+      function updateScoreboard(matches, picksByMatch, users){
+        const results = new Map(
+          matches.filter(m => m.result).map(m => [m.id, { winner: m.result, score: m.resultScore || null }])
+        );
+        const totals = new Map(); // uid -> { points }
+
+        picksByMatch.forEach((picks, matchId) => {
+          const res = results.get(matchId);
+          if (!res) return;
+          picks.forEach(p => {
+            const cur = totals.get(p.userId) || { points: 0 };
+            const correctWinner = p.pick && (p.pick === res.winner);
+            const exact = correctWinner && p.exactScore && res.score && (p.exactScore === res.score);
+            cur.points += exact ? POINTS_EXACT : (correctWinner ? POINTS_PER_CORRECT : 0);
+            totals.set(p.userId, cur);
+          });
+        });
+
+        const rows = Array.from(users.keys()).map(uid => {
+          const name = users.get(uid)?.displayName || 'Unknown';
+          const points = totals.get(uid)?.points ?? 0;
+          return { name, points };
+        }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
+
+        scoreboardBody.innerHTML = rows.map((r,i)=>{
+          const rank = i + 1;
+          const trClass = rank <= 3 ? `tr-rank-${rank}` : '';
+          return `<tr class="${trClass}">
+            <td><span class="rank-badge">${rank}.</span></td>
+            <td>${r.name}</td>
+            <td>${r.points}</td>
+          </tr>`;
+        }).join('');
+      }
+    </script>
   </body>
 </html>
