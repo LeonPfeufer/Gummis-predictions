@@ -77,7 +77,7 @@
       #upcoming .card { background: var(--card-upcoming); border: 1px solid var(--border-upcoming); box-shadow: 0 0 10px var(--border-upcoming);} 
       #past .card { background: var(--card-past); border: 1px solid var(--border-past); box-shadow: 0 0 10px var(--border-past);} 
       #upcoming .card:hover { box-shadow: 0 0 18px var(--border-upcoming); transform: translateY(-3px); transition: all 0.2s ease-in-out;} 
-      #past .card:hover { box-shadow: 0 0 18px var(--border-past); transform: translateY(-3px); transition: all 0.2s ease-in-out;}
+      #past .card:hover { box-shadow: 0 0 18px rgba(124,197,255,.55); transform: translateY(-3px); transition: all 0.2s ease-in-out;}
 
       /* PANELS (big rounded squares with previews) */
       .panels { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:16px; }
@@ -107,14 +107,15 @@
         .past-grid{ grid-template-columns:1fr; }
       }
       .past-card{
-        border-radius:14px;
-        background: var(--card-past, #1c161a);
-        box-shadow:
-          0 0 0 1px rgba(255,255,255,.08),
-          0 6px 24px rgba(0,0,0,.35),
-          0 0 22px rgba(255, 0, 120, .12);  /* soft outer glow for separation */
-        padding:14px;
-      }
+  border-radius:14px;
+  background: var(--card-past, #1c161a);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,.08),
+    0 6px 24px rgba(0,0,0,.35),
+    0 0 22px rgba(124, 197, 255, .22); /* light-blue outer glow */
+  padding:14px;
+}
+
       .past-header{
         display:grid;
         grid-template-columns:1fr auto 1fr;
@@ -189,14 +190,20 @@
         border-radius:6px;
         background: rgba(255,255,255,.05);
       }
-      /* result color square */
-      .result-dot{
-        width:16px; height:16px; border-radius:4px;
-        box-shadow: 0 0 0 1px rgba(255,255,255,.15), 0 0 10px rgba(0,0,0,.35);
-      }
-      .result-dot.exact   { background:#18C13E; } /* green */
-      .result-dot.correct { background:#E1B600; } /* yellow */
-      .result-dot.wrong   { background:#E03A3A; } /* red */
+      /* result color square (bet outcome) */
+    .result-dot{
+    display:inline-block;
+    width:16px;
+    height:16px;
+    border-radius:4px;
+    border:1px solid rgba(255,255,255,.20);      /* crisp edge on dark bg */
+    box-shadow: 0 0 0 2px rgba(0,0,0,.28) inset,  /* inner contrast */
+              0 0 10px rgba(0,0,0,.35);        /* soft outer shadow */
+    }
+    .result-dot.exact   { background:#18C13E; }  /* green */
+    .result-dot.correct { background:#E1B600; }  /* yellow */
+    .result-dot.wrong   { background:#E03A3A; }  /* red */
+
     </style>
   </head>
   <body>
@@ -818,7 +825,6 @@
             const pickedTeamName = p.pick === 'A' ? m.teamA : m.teamB;
             const pickedLogo = teamLogoUrl(pickedTeamName);
             const state = classifyBet(p.pick, p.exactScore, m.result, m.resultScore); // "exact" | "correct" | "wrong" | null
-            const dotCls = state ? state : 'wrong';
 
             const userCell = document.createElement('div');
             userCell.className = 'user';
@@ -832,12 +838,15 @@
             scoreCell.textContent = formatScoreColon(p.exactScore || '');
 
             const dotCell = document.createElement('div');
-            dotCell.innerHTML = `<span class="result-dot ${dotCls}"></span>`;
+            dotCell.innerHTML = state
+            ? `<span class="result-dot ${state}" title="${state === 'exact' ? 'Exact score' : state === 'correct' ? 'Right winner' : 'Wrong pick'}"></span>`
+            : ''; // no square shown until result exists
 
             picksWrap.appendChild(userCell);
             picksWrap.appendChild(logoCell);
             picksWrap.appendChild(scoreCell);
             picksWrap.appendChild(dotCell);
+
           });
 
           card.appendChild(picksWrap);
