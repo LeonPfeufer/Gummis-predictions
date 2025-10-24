@@ -385,8 +385,13 @@ function winnerFromScore(score){
     const matches = snap.docs.map(d=>({ id:d.id, ...d.data() }));
     const [picksSnap, usersSnap] = await Promise.all([ getDocs(collection(db,'picks')), getDocs(collection(db,'users')) ]);
     const users = new Map(usersSnap.docs.map(d=>[d.id, d.data()]));
-    const picksByMatch = new Map();
-    picksSnap.forEach(p=>{ const data = p.data(); const list = picksByMatch.get(data.matchId) || []; list.push({ userId: data.userId, pick: data.pick }); picksByMatch.set(data.matchId, list); });
+    const picksByMatch = new Map(); // matchId -> [{userId, pick, exactScore}]
+    picksSnap.forEach(p=>{
+    const data = p.data();
+    const list = picksByMatch.get(data.matchId) || [];
+    list.push({ userId: data.userId, pick: data.pick, exactScore: data.exactScore || null });
+    picksByMatch.set(data.matchId, list);
+    });
 
     // Split upcoming and past
     const future = matches.filter(m=>!locked(m));
@@ -669,30 +674,35 @@ async function savePickWithScore(match, pick, exactScore){
   const scoreboardBody = document.querySelector('#scoreboard tbody');
   function updateScoreboard(matches, picksByMatch, users){
   // Build quick lookup for match results
-  const results = new Map(matches.filter(m=>m.result).map(m=>[m.id, { winner:m.result, score:m.resultScore || null }]));
+  const results = new Map(
+    matches.filter(m => m.result).map(m => [m.id, { winner: m.result, score: m.resultScore || null }])
+  );
+
   const totals = new Map(); // uid -> { points }
 
-  // Calculate points
-  picksByMatch.forEach((picks, matchId)=>{
+  picksByMatch.forEach((picks, matchId) => {
     const res = results.get(matchId);
-    if(!res) return; // only count matches with results
-    picks.forEach(p=>{
-      const cur = totals.get(p.userId) || { points:0 };
+    if (!res) return; // only count matches with results
+
+    picks.forEach(p => {
+      const cur = totals.get(p.userId) || { points: 0 };
       const correctWinner = p.pick && (p.pick === res.winner);
       const exact = correctWinner && p.exactScore && res.score && (p.exactScore === res.score);
+
       cur.points += exact ? POINTS_EXACT : (correctWinner ? POINTS_PER_CORRECT : 0);
       totals.set(p.userId, cur);
     });
   });
 
-  const rows = Array.from(users.keys()).map(uid=>{
+  const rows = Array.from(users.keys()).map(uid => {
     const name = users.get(uid)?.displayName || 'Unknown';
     const points = totals.get(uid)?.points ?? 0;
     return { name, points };
   }).sort((a,b)=> b.points - a.points || a.name.localeCompare(b.name));
 
   scoreboardBody.innerHTML = rows.map((r,i)=>{
-    const rank=i+1; const trClass = rank<=3 ? `tr-rank-${rank}` : '';
+    const rank = i + 1;
+    const trClass = rank <= 3 ? `tr-rank-${rank}` : '';
     return `<tr class="${trClass}">
       <td><span class="rank-badge">${rank}.</span></td>
       <td>${r.name}</td>
@@ -700,6 +710,7 @@ async function savePickWithScore(match, pick, exactScore){
     </tr>`;
   }).join('');
 }
+
 
 </script>
 ```
