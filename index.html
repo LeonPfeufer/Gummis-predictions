@@ -340,21 +340,33 @@ function winnerFromScore(score){
   const detailsPast = document.getElementById('details-past');
 
   let expanded = null; // 'upcoming' | 'past' | null
-  function expand(which){
-    expanded = which;
-    const isUp = which === 'upcoming';
-    detailsUpcoming.classList.toggle('hidden', !isUp);
-    detailsPast.classList.toggle('hidden', isUp);
-    panelUpcoming.setAttribute('aria-expanded', isUp);
-    panelPast.setAttribute('aria-expanded', !isUp);
-    // scroll into view when opening
-    if(which){
-      const target = isUp ? detailsUpcoming : detailsPast;
-      target.scrollIntoView({ behavior:'smooth', block:'start' });
-    }
+function togglePanel(which){
+  // If the same panel is clicked again -> collapse both
+  if (expanded === which) {
+    expanded = null;
+    detailsUpcoming.classList.add('hidden');
+    detailsPast.classList.add('hidden');
+    panelUpcoming.setAttribute('aria-expanded', 'false');
+    panelPast.setAttribute('aria-expanded', 'false');
+    // Scroll back to the panels row for nice UX
+    document.querySelector('.panels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
   }
-  panelUpcoming.addEventListener('click', ()=> expand('upcoming'));
-  panelPast.addEventListener('click', ()=> expand('past'));
+
+  // Otherwise open the requested panel and close the other
+  expanded = which;
+  const isUp = which === 'upcoming';
+  detailsUpcoming.classList.toggle('hidden', !isUp);
+  detailsPast.classList.toggle('hidden', isUp);
+  panelUpcoming.setAttribute('aria-expanded', String(isUp));
+  panelPast.setAttribute('aria-expanded', String(!isUp));
+  const target = isUp ? detailsUpcoming : detailsPast;
+  target.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+  panelUpcoming.addEventListener('click', ()=> togglePanel('upcoming'));
+  panelPast.addEventListener('click', ()=> togglePanel('past'));
+
 
  addForm?.addEventListener('submit', async (e)=>{
   e.preventDefault();
