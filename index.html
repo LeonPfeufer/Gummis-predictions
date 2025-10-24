@@ -61,6 +61,64 @@
   .tag.good { color:#0f3; border-color:#174; }
   .tag.bad { color:#f66; border-color:#402; }
   .tag.pending { color:#9bb3ce; border-color:#223045; }
+      
+  /* --- Past matches redesign --- */
+.past-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 16px;
+}
+
+.past-card {
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 12px;
+  background: rgba(255,255,255,0.02);
+}
+
+.past-card-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.past-card-header .team-logo {
+  height: 64px;
+  width: 64px;
+  object-fit: contain;
+}
+.past-card-header .vs {
+  text-align: center;
+  font-weight: bold;
+}
+
+.bet-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.bet-table td {
+  padding: 6px 8px;
+  border-bottom: 1px dashed rgba(255,255,255,0.05);
+}
+.bet-table tr:last-child td {
+  border-bottom: none;
+}
+.bet-team-logo {
+  height: 20px;
+  width: 20px;
+  object-fit: contain;
+  vertical-align: middle;
+}
+.bet-square {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border-radius: 4px;
+}
+.bet-square.wrong { background: #e74c3c; }   /* red */
+.bet-square.correct { background: #f1c40f; } /* yellow */
+.bet-square.exact { background: #2ecc71; }   /* green */
 
   /* --- Team logos --- */
   .logo-sm { width:24px; height:24px; object-fit:contain; vertical-align:middle; }
@@ -677,13 +735,64 @@ async function savePickWithScore(match, pick, exactScore){
     upcomingEl.innerHTML = '';
     pastEl.innerHTML = '';
     future.forEach(m=>{ const card = matchCard(m, picksByMatch.get(m.id)||[], false, users); upcomingEl.appendChild(card); });
-    past.forEach(m=>{ const card = matchCard(m, picksByMatch.get(m.id)||[], true, users); pastEl.appendChild(card); });
+   // --- Custom rendering for past matches (side-by-side layout) ---
+const pastGrid = document.createElement('div');
+pastGrid.className = 'past-grid';
+past.forEach(match => {
+  const picks = picksByMatch.get(match.id) || [];
+  const result = match.result;
+  const resultScore = match.resultScore;
+
+  // Create card container
+  const card = document.createElement('div');
+  card.className = 'past-card';
+
+  // Header (big logos)
+  card.innerHTML = `
+    <div class="past-card-header">
+      <img class="team-logo" src="${TEAM_LOGOS[teamKey(match.teamA)] || ''}" alt="${match.teamA}">
+      <div class="vs">vs</div>
+      <img class="team-logo" src="${TEAM_LOGOS[teamKey(match.teamB)] || ''}" alt="${match.teamB}">
+    </div>
+    <table class="bet-table">
+      <tbody>
+        ${picks.map(p => {
+          const user = users.get(p.userId);
+          const name = user?.displayName || 'Unknown';
+          const pickedTeam = p.pick === 'A' ? match.teamA : match.teamB;
+          const logo = TEAM_LOGOS[teamKey(pickedTeam)] || '';
+          const outcome = classifyBet(p.pick, p.exactScore, result, resultScore);
+          return `
+            <tr>
+              <td style="font-weight:600;">${name}</td>
+              <td><img class="bet-team-logo" src="${logo}" alt="${pickedTeam}"></td>
+              <td>${p.exactScore || ''}</td>
+              <td><span class="bet-square ${outcome || ''}"></span></td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  `;
+  pastGrid.appendChild(card);
+});
+pastEl.innerHTML = '';
+pastEl.appendChild(pastGrid);
+
     if(!upcomingEl.hasChildNodes()) upcomingEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No upcoming matches yet.</div>';
     if(!pastEl.hasChildNodes()) pastEl.innerHTML = '<div class="muted" style="padding:8px 12px;">No past matches yet.</div>';
   }
 
   // ======= Scoreboard =======
   const scoreboardBody = document.querySelector('#scoreboard tbody');
+  
+  // ======= Helper: classify each bet for result coloring =======
+function classifyBet(pick, exactScore, result, resultScore) {
+  if (!result) return null;
+  if (pick === result && exactScore && resultScore && exactScore === resultScore) return "exact";
+  if (pick === result) return "correct";
+  return "wrong";
+}
+
   function updateScoreboard(matches, picksByMatch, users){
   // Build quick lookup for match results
   const results = new Map(
