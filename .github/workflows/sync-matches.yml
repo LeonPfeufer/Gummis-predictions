@@ -1,0 +1,29 @@
+name: Update Worlds matches
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: worlds-match-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    if: vars.WORLDS_SYNC_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run sync
+        env:
+          PANDASCORE_TOKEN: ${{ secrets.PANDASCORE_TOKEN }}
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          PANDASCORE_TOURNAMENT_IDS: ${{ vars.PANDASCORE_TOURNAMENT_IDS }}
+          WORLDS_SEASON: '2026'

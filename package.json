@@ -1,0 +1,20 @@
+{
+  "name": "gummis-predictions",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "test:browser": "node scripts/browser-check.js",
+    "check": "node --check app.js && node --check scripts/sync-matches.js && node --test",
+    "sync": "node scripts/sync-matches.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "firebase-admin": "^14.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1"
+  }
+}

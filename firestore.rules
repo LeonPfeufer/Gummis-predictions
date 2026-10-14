@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function admin() { return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)) && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.enabled == true; }
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, write: if false;
+    }
+    match /matches/{id} {
+      allow read: if true;
+      allow create, update: if admin();
+      allow delete: if false;
+    }
+    match /users/{uid} {
+      allow read: if true;
+      function validProfile() { return signedIn() && request.auth.uid == uid
+        && request.resource.data.uid == uid
+        && request.resource.data.displayName is string
+        && request.resource.data.displayName.size() <= 100
+        && request.resource.data.updatedAt == request.time; }
+      allow create: if validProfile() && request.resource.data.keys().hasOnly(['uid','displayName','updatedAt']);
+      allow update: if validProfile() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid','displayName','updatedAt']);
+      allow delete: if false;
+    }
+    match /picks/{id} {
+      function validPick() {
+        let p = request.resource.data;
+        let m = get(/databases/$(database)/documents/matches/$(p.matchId)).data;
+        let score = p.exactScore;
+        return p.keys().hasOnly(['userId','userName','matchId','pick','exactScore','updatedAt'])
+          && p.userId == request.auth.uid && id == request.auth.uid + '_' + p.matchId
+          && p.userName is string && p.userName.size() <= 100
+          && p.pick in ['A','B'] && p.updatedAt == request.time
+          && m.startTime > request.time
+          && m.startTime >= timestamp.date(2026,1,1) && m.startTime < timestamp.date(2027,1,1)
+          && m.get('result',null) == null && m.get('status','not_started') == 'not_started'
+          && (score == null || (m.series == 'BO3' && ((p.pick == 'A' && score in ['2-0','2-1']) || (p.pick == 'B' && score in ['0-2','1-2'])))
+            || (m.series == 'BO5' && ((p.pick == 'A' && score in ['3-0','3-1','3-2']) || (p.pick == 'B' && score in ['0-3','1-3','2-3']))));
+      }
+      allow read: if true;
+      allow create, update: if signedIn() && validPick();
+      allow delete: if false;
+    }
+    match /system/{id} { allow read: if true; allow write: if false; }
+  }
+}
