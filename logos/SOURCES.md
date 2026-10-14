@@ -1,0 +1,1 @@
+League of Legends gold icon (`league-of-legends.png`): Riot Games, official LoL_Icon_Flat_Gold asset package from https://www.leagueoflegends.com/en-us/league-of-legends-downloads/ . League of Legends and its logo are Riot Games trademarks. This fan prediction site is not affiliated with Riot Games.
