@@ -12,13 +12,19 @@ A GitHub Pages website for friends to predict Worlds matches. Google sign-in and
 
 ## Activate Firebase access first
 
-1. In Firebase Console → Authentication → Users, find your user UID. In Firestore create `admins/<your UID>` with the boolean field `enabled: true`. Repeat for friends who should manage results. Admin email lists in browser JavaScript have been replaced with server-enforced roles.
+1. Community management is enabled: every Google-signed-in visitor can add matches and enter or correct results. No admin UID setup is needed. Only share the site with people you trust; this is not an invitation-restricted group.
 2. Deploy `firestore.rules` to the existing project using Firebase Console → Firestore → Rules, or `firebase deploy --only firestore:rules --project lol-gummis` with an authenticated Firebase CLI. Review existing rules before replacing them if other apps share this database. The rules enforce ownership, valid exact scores, and deadlines using server time.
 3. Keep Google sign-in enabled and the GitHub Pages hostname in Authentication → Settings → Authorized domains. Use `localhost` there if testing authentication locally.
 
 Existing users retain their profile documents. New profile writes do not add email addresses. Existing 2025 matches and predictions are excluded automatically. To physically remove those records, first export a backup, then delete only matches whose startTime is in 2025 and picks whose matchId references those matches. Do not delete users or the whole matches/picks collections.
 
-## Activate automatic matches and results
+## Preview without setup
+
+Open `?demo=1` on the website for a labelled, interactive preview with fictional matchups and sample standings. Click “Try as a player” to test predictions and manual match entry. Preview changes live in memory in the current tab, disappear on refresh, and never contact Firebase. The normal website continues using the real database.
+
+Manual matches and results need no PandaScore account. The new Firebase rules must still be deployed for all friends to have write access; publishing HTML cannot change existing database permissions.
+
+## Optional: activate automatic matches and results
 
 Use a [PandaScore API account](https://developers.pandascore.co/reference/get_lol_matches) with access to LoL fixtures/results. Check the provider's current plan and permitted usage; the integration does not assume a particular price. Add these in GitHub → repository Settings → Secrets and variables → Actions:
 

@@ -1,6 +1,4 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js';
-import { getFirestore, collection, doc, addDoc, setDoc, onSnapshot, serverTimestamp, runTransaction, query, where } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js';
+import { initializeApp, getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, getFirestore, collection, doc, addDoc, setDoc, onSnapshot, serverTimestamp, runTransaction, query, where, DEMO } from './backend.js';
 import { firebaseConfig, SEASON } from './config.js';
 import { asDate, isLocked, scoreOptions, standings, pointsFor } from './domain.js';
 
@@ -9,7 +7,7 @@ const auth = getAuth();
 const $ = id => document.getElementById(id);
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let user = null, admin = false, filter = 'upcoming', matches = [], picks = [], users = new Map();
-let loaded = false, stopAdmin = () => {}, matchError = false;
+let loaded = false, matchError = false;
 const drafts = new Map(), saving = new Set();
 const logos = {T1:'SKT',SKT:'SKT',GENG:'GenG',GEN:'GenG',G2:'G2',CFO:'CFO',KT:'KT',AL:'AL',FNC:'FNC',MKOI:'MKOI',TES:'TES','100T':'100T',BLG:'BLG',FLY:'FLY',HLE:'HLE',PSG:'PSG',SW:'SW',VKS:'VKS'};
 const timeFormat = new Intl.DateTimeFormat(undefined,{hour:'2-digit',minute:'2-digit'});
@@ -20,13 +18,12 @@ async function attempt(action) { try { await action(); } catch(e) { message(e.co
 $('sign-in').onclick = () => attempt(() => signInWithPopup(auth,new GoogleAuthProvider()));
 $('sign-out').onclick = () => attempt(() => signOut(auth));
 onAuthStateChanged(auth, async next => {
-  stopAdmin(); user = next; admin = false; drafts.clear();
+  user = next; admin = !!user; drafts.clear();
   $('sign-in').hidden = !!user; $('sign-out').hidden = !user;
   $('user-name').textContent = user?.displayName || '';
   render();
   if (!user) return;
   const uid = user.uid;
-  stopAdmin = onSnapshot(doc(db,'admins',uid), snap => { admin = snap.exists() && snap.data().enabled === true; render(); }, () => { admin = false; render(); });
   await attempt(() => setDoc(doc(db,'users',uid), {uid,displayName:user.displayName || 'Player',updatedAt:serverTimestamp()}, {merge:true}));
 });
 
@@ -37,8 +34,12 @@ onSnapshot(collection(db,'picks'), snap => { picks = snap.docs.map(d => d.data()
 onSnapshot(collection(db,'users'), snap => { users = new Map(snap.docs.map(d => [d.id,d.data()])); render(); }, () => message('Player names could not be loaded.',true));
 onSnapshot(doc(db,'system','sync'), snap => {
   const data = snap.data();
-  $('sync-status').textContent = data?.lastSuccess && data.season === SEASON ? `Schedule checked ${asDate(data.lastSuccess).toLocaleString()}` : 'Schedule updates not connected yet';
-}, () => { $('sync-status').textContent = 'Schedule update status unavailable'; });
+  $('sync-status').textContent = data?.lastSuccess && data.season === SEASON ? `Schedule checked ${asDate(data.lastSuccess).toLocaleString()}` : 'Community schedule · updated by friends';
+}, () => { $('sync-status').textContent = 'Community schedule · updated by friends'; });
+if (DEMO) {
+  $('preview-banner').innerHTML = 'Design preview · fictional matches and sample players. Changes stay in this tab. <a href="./">Back to the real competition →</a>';
+  $('sign-in').textContent = 'Try as a player';
+}
 document.querySelectorAll('[data-filter]').forEach(btn => btn.onclick = () => { filter = btn.dataset.filter; render(); });
 // Update locks without replacing a focused control or a prediction being edited.
 setInterval(() => { if (matches.some(m => document.querySelector(`[data-open="${CSS.escape(m.id)}"]`) && isLocked(m))) render(); },1000);
